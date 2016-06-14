@@ -1,4 +1,4 @@
-public class MovementComponent : Component {
+public class MovementComponent : Engine.Component {
 
     public MovementComponent () {
 

@@ -30,6 +30,12 @@ PKG_CHECK_MODULES(YVILAND, [
 			gxml-0.10
 ])
 
+PKG_CHECK_MODULES(ENGINE, [
+			gobject-2.0
+			glib-2.0
+			gee-0.8
+])
+
 PKG_CHECK_MODULES(TILED, [
 			glib-2.0
 			gobject-2.0
@@ -50,5 +56,6 @@ AC_CONFIG_FILES([Makefile
                  m4/Makefile
                  src/Makefile
                  tmx/Makefile
+								 engine/Makefile
                  vapi/Makefile])
 AC_OUTPUT

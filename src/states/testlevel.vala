@@ -6,10 +6,11 @@ public class Testlevel : GameState {
         base ("data/testmap.tmx", textureManager, renderer);
 
         var e = this.engine.createEntity();
-
+        e.add_component(new PositionComponent(10, 10));
+        //e.add_component(new RenderComponent.withTexture("player"))
 
         // player Entity
-        var player = new Entity.with_name ("player");
+        var player = new Engine.Entity.with_name ("player");
         player.add_component (new PositionComponent (10, 10));
         player.add_component (new RenderComponent.withTexture ("player", "data/yvonne.png", textureManager, renderer));
         player.add_component (new MovementComponent ());
@@ -57,12 +58,12 @@ public class Testlevel : GameState {
         }*/
     }
 
-    private void collide(Entity e, Gee.Collection<Entity> all) {
+    private void collide(Engine.Entity e, Gee.Collection<Engine.Entity> all) {
         var c1 = e.get_component<CollisionComponent>();
         if( c1 == null ){
             return;
         }
-        foreach( Entity other in all ){
+        foreach( Engine.Entity other in all ){
             if( other.name != e.name ){
                 var c2 = other.get_component<CollisionComponent>();
                 if( c2 != null ){

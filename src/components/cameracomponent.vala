@@ -1,5 +1,5 @@
 
-public class CameraComponent : Component {
+public class CameraComponent : Engine.Component {
     public uint w;
     public uint h;
 

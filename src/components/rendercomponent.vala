@@ -1,6 +1,6 @@
 using SDL.Video;
 
-public class RenderComponent : Component {
+public class RenderComponent : Engine.Component {
     public string identifier;
     public uint w;
     public uint h;

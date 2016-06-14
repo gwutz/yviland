@@ -1,4 +1,4 @@
-public class PositionComponent : Component {
+public class PositionComponent : Engine.Component {
     public int x;
     public int y;
     public int next_x;

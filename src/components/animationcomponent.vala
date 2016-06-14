@@ -1,6 +1,6 @@
 using Gee;
 
-public class AnimationComponent : Component {
+public class AnimationComponent : Engine.Component {
     public string current_animation;
     public int sprite_width;
     private Gee.Map<string, Animation> animations;

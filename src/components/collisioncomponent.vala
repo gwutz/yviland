@@ -1,6 +1,6 @@
 using SDL.Video;
 
-public class CollisionComponent : Component {
+public class CollisionComponent : Engine.Component {
     public Rect box { get; set; }
     public collisionFunc collision;
 
@@ -23,7 +23,7 @@ public class CollisionComponent : Component {
         };
     }
 
-    public bool collidesWith(CollisionComponent other, Entity camera) {
+    public bool collidesWith(CollisionComponent other, Engine.Entity camera) {
         var mapcomponent = this.entity.get_component<TilemapComponent>();
         if( mapcomponent != null ){
             // i am the map

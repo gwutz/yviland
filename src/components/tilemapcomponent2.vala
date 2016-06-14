@@ -1,7 +1,7 @@
 using Tiled;
 using SDL.Video;
 
-public class TilemapComponent2 : Component {
+public class TilemapComponent2 : Engine.Component {
     public Tiled.Map map;
 
     public TilemapComponent2 (Tiled.Map map) {

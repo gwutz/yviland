@@ -1,11 +1,11 @@
 using SDL.Video;
 using Tiled;
 
-public class TilemapRenderSystem : EntitySystem {
+public class TilemapRenderSystem : Engine.EntitySystem {
 
     private weak Renderer renderer;
     private weak TextureManager textureManager;
-    private Gee.List<Entity> entities;
+    private Gee.List<Engine.Entity> entities;
     private weak Camera camera;
     private bool loaded = false;
 
@@ -16,7 +16,7 @@ public class TilemapRenderSystem : EntitySystem {
     }
 
     public void loadTexture() {
-        foreach (Entity e in entities) {
+        foreach (Engine.Entity e in entities) {
             var c = e.get_component<TilemapComponent2>();
             foreach( Tileset ts in c.map.tileset ){
                 textureManager.load (ts.name, "data/" + ts.image.source, renderer);
@@ -32,7 +32,7 @@ public class TilemapRenderSystem : EntitySystem {
             loadTexture();
             loaded = true;
         }
-        foreach (Entity e in entities) {
+        foreach (Engine.Entity e in entities) {
             var c = e.get_component<TilemapComponent2>();
             render_map(c);
         }

@@ -4,8 +4,6 @@ bin_PROGRAMS = yviland
 yviland_SOURCES = main.vala \
 		    components/animationcomponent.vala \
 		    components/collisioncomponent.vala \
-		    components/component.vala \
-		    entity.vala \
 		    game.vala \
 		    gamestate.vala \
 		    components/movementcomponent.vala \
@@ -17,10 +15,6 @@ yviland_SOURCES = main.vala \
 		    states/testlevel.vala \
 				components/cameracomponent.vala \
 				components/gravitycomponent.vala \
-				engine.vala \
-				systemmanager.vala \
-				entitymanager.vala \
-				systems/entitysystem.vala \
 				systems/rendersystem.vala \
 				systems/tilemaprendersystem.vala \
 				camera.vala \
@@ -32,29 +26,13 @@ yviland_VALAFLAGS = \
 		--pkg gxml-0.10 \
 		--pkg tiled \
 		--pkg config \
+		--pkg engine \
 		--vapidir $(top_srcdir)/tmx \
 		--vapidir $(top_srcdir)/vapi \
+		--vapidir $(top_srcdir)/engine \
 		--define=DEBUG \
 		-g \
 		$(NULL)
 
-yviland_CFLAGS = $(YVILAND_CFLAGS) -I$(top_srcdir)/tmx -DPACKAGE_DATADIR=\"$(pkgdatadir)\"
-yviland_LDADD = $(YVILAND_LIBS) $(top_builddir)/tmx/libtiled.la
-
-engine_SOURCES = enginemain.vala \
-				systemmanager.vala \
-				engine.vala \
-				systems/entitysystem.vala \
-				systems/rendersystem.vala \
-				entitymanager.vala \
-				entity.vala \
-				components/component.vala \
-				$(NULL)
-
-engine_VALAFLAGS = \
-				--pkg sdl2 \
-				--pkg sdl2-image \
-				--pkg gee-0.8 \
-				$(NULL)
-engine_CFLAGS = $(YVILAND_CFLAGS)
-engine_LDADD = $(YVILAND_LIBS)
+yviland_CFLAGS = $(YVILAND_CFLAGS) -I$(top_srcdir)/tmx -DPACKAGE_DATADIR=\"$(pkgdatadir)\" -I$(top_srcdir)/engine
+yviland_LDADD = $(YVILAND_LIBS) $(top_builddir)/tmx/libtiled.la $(top_builddir)/engine/libengine.la

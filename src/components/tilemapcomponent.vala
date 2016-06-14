@@ -1,7 +1,7 @@
 using Tiled;
 using SDL.Video;
 
-public class TilemapComponent : Component {
+public class TilemapComponent : Engine.Component {
     public Tiled.Map map;
     private weak TextureManager t;
     private weak Renderer r;
@@ -15,7 +15,7 @@ public class TilemapComponent : Component {
         this.r = r;
     }
 
-    public void render(Entity camera) {
+    public void render(Engine.Entity camera) {
         var camerapos = camera.get_component<PositionComponent>();
         for( int i = 0;i < this.map.height;i++ ){
             for( int j = 0;j < this.map.width;j++ ){

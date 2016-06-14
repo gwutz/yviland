@@ -2,10 +2,10 @@ using SDL.Video;
 using Tiled;
 
 public abstract class GameState {
-    protected Engine engine;
+    protected Engine.Engine engine;
     protected Camera ncamera;
     private Tiled.Map map { get; set; }
-    protected Gee.Map<string, Entity> objects { get; set; default = new Gee.HashMap<string, Entity>(); }
+    protected Gee.Map<string, Engine.Entity> objects { get; set; default = new Gee.HashMap<string, Engine.Entity>(); }
     private Gee.List<GameState> states {
         get; set; default = new Gee.ArrayList<GameState>();
     }
@@ -17,7 +17,7 @@ public abstract class GameState {
 
         this.ncamera = new Camera(0, 0);
 
-        this.engine = new Engine();
+        this.engine = new Engine.Engine();
 
         // Entities
         var entity = this.engine.createEntity();
@@ -33,7 +33,7 @@ public abstract class GameState {
         foreach( GameState state in states ){
             state.handle_events ();
         }
-        foreach( Entity e in this.objects.values ){
+        foreach( Engine.Entity e in this.objects.values ){
             var component = e.get_component<MovementComponent>();
             if( component != null ){
                 component.handle_events ();
@@ -43,8 +43,8 @@ public abstract class GameState {
 
     public virtual void update() {
 
-        foreach(Entity e in this.objects.values) {
-            var component = e.get_components<UpdateComponent>();
+        foreach(Engine.Entity e in this.objects.values) {
+            var component = e.get_components<Engine.UpdateComponent>();
             if(component != null)
                 component.update();
         }

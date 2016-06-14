@@ -1,10 +1,10 @@
 using SDL.Video;
 
-public class RenderSystem : EntitySystem {
+public class RenderSystem : Engine.EntitySystem {
 
     private weak Renderer renderer;
     private weak TextureManager textureManager;
-    private Gee.List<Entity> entities;
+    private Gee.List<Engine.Entity> entities;
     private weak Camera camera;
 
     public RenderSystem(Camera camera, Renderer renderer, TextureManager textureManager) {
@@ -18,7 +18,7 @@ public class RenderSystem : EntitySystem {
                     { typeof(RenderComponent), typeof(PositionComponent) }
         ));
 
-        foreach (Entity e in entities) {
+        foreach (Engine.Entity e in entities) {
             // draw entities
             var v = e.get_component<RenderComponent>();
             render(v);
@@ -26,7 +26,7 @@ public class RenderSystem : EntitySystem {
     }
 
     private void render(RenderComponent c) {
-        foreach (Entity e in entities) {
+        foreach (Engine.Entity e in entities) {
             var rendercomp = e.get_component<RenderComponent>();
             var pos = e.get_component<PositionComponent>();
             if( pos == null ){
