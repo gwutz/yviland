@@ -1,40 +1,50 @@
+using Gee;
+
 public class AnimationComponent : Component {
-    public int sprite_width { get; set; }
-    public GXml.SerializableArrayList<Animation> animation {
-        get; set; default = new GXml.SerializableArrayList<Animation>();
+    public string current_animation;
+    public int sprite_width;
+    private Gee.Map<string, Animation> animations;
+
+    public AnimationComponent () {
+        this.animations = new Gee.HashMap<string, Animation>();
     }
 
-    public override string node_name() {
-        return "AnimationComponent";
+    public AnimationComponent.with_width (int sprite_width) {
+        this();
+        this.sprite_width = sprite_width;
     }
 
-    public override string to_string() {
-        var str = "AnimationComponent: ";
-        str += @"sprite_width: $sprite_width";
-        foreach( Animation a in animation ){
-            str += @"\n$a";
+    public void add_animation(Animation a) {
+        if( current_animation == null ){
+            current_animation = a.get_name ();
         }
-        return str;
+        this.animations.set (a.get_name (), a);
+    }
+
+    public int get_animation_sprite() {
+        var ret = animations.get (current_animation).play_animation ();
+        // stdout.printf("sprite nr %d\n", ret);
+        return ret;
     }
 
 }
 
-public class Animation : GXml.SerializableObjectModel {
-    public string name { get; set; }
-    public int begin { get; set; }
-    public int end { get; set; }
-    public int frames_between { get; set; }
+public class Animation : GLib.Object {
+    private string name;
+    private int begin;
+    private int end;
+    private int frames_between;
     private int current_frame;
     private int current_sprite;
 
-    /*public Animation (string name, int begin, int end, int frames_between) {
+    public Animation (string name, int begin, int end, int frames_between) {
         this.name = name;
         this.begin = begin;
         this.end = end;
         this.frames_between = frames_between;
         this.current_frame = 0;
         this.current_sprite = begin;
-       }*/
+    }
 
     public int play_animation() {
         if( current_frame >= frames_between ){
@@ -50,12 +60,8 @@ public class Animation : GXml.SerializableObjectModel {
         return current_sprite;
     }
 
-    public override string node_name() {
-        return "Animation";
-    }
-
-    public override string to_string() {
-        return @"Animation: $name $begin $end $frames_between";
+    public string get_name() {
+        return this.name;
     }
 
 }

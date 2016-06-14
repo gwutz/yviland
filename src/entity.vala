@@ -4,9 +4,13 @@ public class Entity : GLib.Object {
     public string name { get; set; }
     private Gee.List<Component> components;
 
-    public Entity (string name) {
-        this.name = name;
+    public Entity() {
         components = new ArrayList<Component>();
+    }
+
+    public Entity.with_name (string name) {
+        this();
+        this.name = name;
     }
 
     public T ? get_component<T>() {
@@ -33,6 +37,16 @@ public class Entity : GLib.Object {
         c.entity = this;
         components.add (c);
 
+    }
+
+    public bool has_component(Type t) {
+        stdout.printf("size components %d type %s\n", components.size, t.name());
+        foreach (Component c in components) {
+            if(c.get_type() == t) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

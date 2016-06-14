@@ -5,8 +5,11 @@ public class Testlevel : GameState {
     public Testlevel (TextureManager textureManager, Renderer renderer) {
         base ("data/testmap.tmx", textureManager, renderer);
 
+        var e = this.engine.createEntity();
+
+
         // player Entity
-        var player = new Entity ("player");
+        var player = new Entity.with_name ("player");
         player.add_component (new PositionComponent (10, 10));
         player.add_component (new RenderComponent.withTexture ("player", "data/yvonne.png", textureManager, renderer));
         player.add_component (new MovementComponent ());
@@ -27,7 +30,7 @@ public class Testlevel : GameState {
 
     public override void update() {
         base.update();
-        Entity camera = objects.get("camera");
+        /*Entity camera = objects.get("camera");
 
         foreach( Entity e in this.objects.values ){
             if (e == camera) continue;
@@ -51,7 +54,7 @@ public class Testlevel : GameState {
                 }
             }
             collide (e, this.objects.values);
-        }
+        }*/
     }
 
     private void collide(Entity e, Gee.Collection<Entity> all) {

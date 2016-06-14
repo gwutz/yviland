@@ -1,6 +1,7 @@
-public class Component : GXml.SerializableObjectModel {
-    public override string to_string() {
-        return this.get_type ().name ();
-    }
+public abstract class Component : GLib.Object {
+    public weak Entity entity { get; set; }
+}
 
+public abstract class UpdateComponent : Component {
+    public abstract void update();
 }

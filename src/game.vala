@@ -39,15 +39,9 @@ public class Game : GLib.Object {
     }
 
     public void update() {
-        this.state.update ();
-    }
-
-    public void draw() {
         this.renderer.set_draw_color (60, 128, 200, 255);
         this.renderer.clear ();
-
-        this.state.draw (textureManager, renderer);
-
+        this.state.update ();
         this.renderer.present ();
     }
 

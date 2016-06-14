@@ -13,7 +13,6 @@ public static void main(string[] argv) {
 
         game.handle_events ();
         game.update ();
-        game.draw ();
 
         var end = SDL.Timer.get_ticks ();
         var duration = end - start;

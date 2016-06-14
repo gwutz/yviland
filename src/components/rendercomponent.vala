@@ -1,7 +1,7 @@
 using SDL.Video;
 
 public class RenderComponent : Component {
-    private string identifier;
+    public string identifier;
     public uint w;
     public uint h;
 
