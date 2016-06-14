@@ -1,0 +1,12 @@
+
+-include $(top_srcdir)/git.mk
+
+NULL =
+
+confdir = $(pkgdatadir)/
+conf_DATA = \
+	yvonne.png \
+	testmap.tmx \
+	tiles.png \
+	$(NULL)
+	

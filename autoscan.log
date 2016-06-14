@@ -1,0 +1,30 @@
+autoscan: warning: missing AC_CHECK_FUNCS([memset]) wanted by: 
+	src/texturemanager.c:221
+	src/texturemanager.c:276
+	src/rendercomponent.c:314
+	src/rendercomponent.c:378
+	src/rendercomponent.c:413
+	src/tilemapcomponent.c:401
+	src/collisioncomponent.c:116
+autoscan: warning: missing AC_CHECK_HEADERS([float.h]) wanted by: 
+	tmx/object.c:10
+	tmx/tiled.h:11
+	src/texturemanager.c:13
+	src/game.c:9
+autoscan: warning: missing AC_PROG_CXX wanted by: 
+	build-aux/ltmain.sh:2198
+	build-aux/ltmain.sh:2657
+	build-aux/ltmain.sh:2660
+	build-aux/ltmain.sh:2665
+	build-aux/ltmain.sh:2665
+	build-aux/ltmain.sh:2675
+	build-aux/ltmain.sh:2679
+	build-aux/ltmain.sh:2682
+	build-aux/ltmain.sh:2682
+	build-aux/ltmain.sh:3759
+	build-aux/ltmain.sh:8635
+	build-aux/ltmain.sh:8647
+	build-aux/ltmain.sh:8649
+	build-aux/ltmain.sh:8884
+autoscan: warning: missing AC_PROG_RANLIB wanted by: 
+	build-aux/ltmain.sh:3772
