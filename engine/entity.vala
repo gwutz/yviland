@@ -41,7 +41,6 @@ namespace Engine {
         }
 
         public bool has_component(Type t) {
-            stdout.printf("size components %d type %s\n", components.size, t.name());
             foreach (Component c in components) {
                 if(c.get_type() == t) {
                     return true;

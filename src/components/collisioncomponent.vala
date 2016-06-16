@@ -12,18 +12,29 @@ public class CollisionComponent : Engine.Component {
         };
     }
 
-    public Rect getAbsoluteBox(PositionComponent camera) {
+    public Rect getAbsoluteBox() {
         var pos = this.entity.get_component<PositionComponent>();
 
         return Rect() {
-            x = pos.next_x + box.x + camera.x - 1,
-            y = pos.next_y + box.y,
+            x = pos.x + pos.velocity_x + box.x,
+            y = pos.y + pos.velocity_y + box.y,
             w = box.w,
             h = box.h
         };
     }
 
-    public bool collidesWith(CollisionComponent other, Engine.Entity camera) {
+    public Rect getHAbsoluteBox() {
+        var pos = this.entity.get_component<PositionComponent>();
+
+        return Rect() {
+            x = pos.x + pos.velocity_x + box.x,
+            y = pos.y + box.y,
+            w = box.w,
+            h = box.h
+        };
+    }
+
+    /*public bool collidesWith(CollisionComponent other, Engine.Entity camera) {
         var mapcomponent = this.entity.get_component<TilemapComponent>();
         if( mapcomponent != null ){
             // i am the map
@@ -45,6 +56,6 @@ public class CollisionComponent : Engine.Component {
             return true;
         }
         return false;
-    }
+    }*/
 
 }

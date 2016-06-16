@@ -20,10 +20,15 @@ public class TextureManager : GLib.Object {
     }
 
     public Texture load(string identifier, string filename, SDL.Video.Renderer renderer) {
+        stdout.printf("LOAD TEXTURE: %s WITH IDENTIFIER: %s\n", filename, identifier);
         SDL.Video.Texture texture = SDLImage.load_texture (renderer, filename);
         Texture t = new Texture (ref texture);
         map.set (identifier, t);
         return t;
+    }
+
+    public bool texture_loaded(string identifier) {
+        return map.has_key(identifier);
     }
 
     public void draw(string identifier, SDL.Video.Rect dst, SDL.Video.Renderer renderer) {

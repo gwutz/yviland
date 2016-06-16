@@ -20,12 +20,37 @@ public class RenderSystem : Engine.EntitySystem {
 
         foreach (Engine.Entity e in entities) {
             // draw entities
-            var v = e.get_component<RenderComponent>();
-            render(v);
+            render(e);
         }
     }
 
-    private void render(RenderComponent c) {
+    private void render(Engine.Entity e) {
+        var c = e.get_component<RenderComponent>();
+        var pos = e.get_component<PositionComponent>();
+        var ani = e.get_component<AnimationComponent>();
+        var collision = e.get_component<CollisionComponent>();
+        pos.update_position();
+        var r = Rect() {
+            x = pos.x, y = pos.y, w = c.w, h = c.h
+        };
+
+        if(collision != null) {
+            renderer.set_draw_color (96, 190, 255, 118);
+            var box = SDL.Video.Rect () {
+                x = pos.x + collision.box.x, y = pos.y + collision.box.y,
+                w = collision.box.w, h = collision.box.h
+            };
+            renderer.fill_rect (box);
+        }
+
+        if(ani != null) {
+            textureManager.draw_frame(c.identifier, r, 0, ani.get_animation_number(), pos.flip, renderer);
+        } else {
+            textureManager.draw_frame(c.identifier, r, 0, 0, pos.flip, renderer);
+        }
+    }
+
+    /*private void render(RenderComponent c) {
         foreach (Engine.Entity e in entities) {
             var rendercomp = e.get_component<RenderComponent>();
             var pos = e.get_component<PositionComponent>();
@@ -62,5 +87,5 @@ public class RenderSystem : Engine.EntitySystem {
                 }
             }
         }
-    }
+    }*/
 }

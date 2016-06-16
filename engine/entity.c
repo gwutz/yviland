@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gee.h>
-#include <stdio.h>
 
 
 #define ENGINE_TYPE_ENTITY (engine_entity_get_type ())
@@ -260,63 +259,50 @@ void engine_entity_add_component (EngineEntity* self, EngineComponent* c) {
 
 gboolean engine_entity_has_component (EngineEntity* self, GType t) {
 	gboolean result = FALSE;
-	FILE* _tmp0_ = NULL;
-	GeeList* _tmp1_ = NULL;
-	gint _tmp2_ = 0;
-	gint _tmp3_ = 0;
-	GType _tmp4_ = 0UL;
-	const gchar* _tmp5_ = NULL;
 	g_return_val_if_fail (self != NULL, FALSE);
-	_tmp0_ = stdout;
-	_tmp1_ = self->priv->components;
-	_tmp2_ = gee_collection_get_size ((GeeCollection*) _tmp1_);
-	_tmp3_ = _tmp2_;
-	_tmp4_ = t;
-	_tmp5_ = g_type_name (_tmp4_);
-	fprintf (_tmp0_, "size components %d type %s\n", _tmp3_, _tmp5_);
 	{
 		GeeList* _c_list = NULL;
-		GeeList* _tmp6_ = NULL;
-		GeeList* _tmp7_ = NULL;
+		GeeList* _tmp0_ = NULL;
+		GeeList* _tmp1_ = NULL;
 		gint _c_size = 0;
-		GeeList* _tmp8_ = NULL;
-		gint _tmp9_ = 0;
-		gint _tmp10_ = 0;
+		GeeList* _tmp2_ = NULL;
+		gint _tmp3_ = 0;
+		gint _tmp4_ = 0;
 		gint _c_index = 0;
-		_tmp6_ = self->priv->components;
-		_tmp7_ = _g_object_ref0 (_tmp6_);
-		_c_list = _tmp7_;
-		_tmp8_ = _c_list;
-		_tmp9_ = gee_collection_get_size ((GeeCollection*) _tmp8_);
-		_tmp10_ = _tmp9_;
-		_c_size = _tmp10_;
+		_tmp0_ = self->priv->components;
+		_tmp1_ = _g_object_ref0 (_tmp0_);
+		_c_list = _tmp1_;
+		_tmp2_ = _c_list;
+		_tmp3_ = gee_collection_get_size ((GeeCollection*) _tmp2_);
+		_tmp4_ = _tmp3_;
+		_c_size = _tmp4_;
 		_c_index = -1;
 		while (TRUE) {
-			gint _tmp11_ = 0;
-			gint _tmp12_ = 0;
-			gint _tmp13_ = 0;
+			gint _tmp5_ = 0;
+			gint _tmp6_ = 0;
+			gint _tmp7_ = 0;
 			EngineComponent* c = NULL;
-			GeeList* _tmp14_ = NULL;
-			gint _tmp15_ = 0;
-			gpointer _tmp16_ = NULL;
-			EngineComponent* _tmp17_ = NULL;
-			GType _tmp18_ = 0UL;
-			GType _tmp19_ = 0UL;
-			_tmp11_ = _c_index;
-			_c_index = _tmp11_ + 1;
-			_tmp12_ = _c_index;
-			_tmp13_ = _c_size;
-			if (!(_tmp12_ < _tmp13_)) {
+			GeeList* _tmp8_ = NULL;
+			gint _tmp9_ = 0;
+			gpointer _tmp10_ = NULL;
+			EngineComponent* _tmp11_ = NULL;
+			GType _tmp12_ = 0UL;
+			GType _tmp13_ = 0UL;
+			_tmp5_ = _c_index;
+			_c_index = _tmp5_ + 1;
+			_tmp6_ = _c_index;
+			_tmp7_ = _c_size;
+			if (!(_tmp6_ < _tmp7_)) {
 				break;
 			}
-			_tmp14_ = _c_list;
-			_tmp15_ = _c_index;
-			_tmp16_ = gee_list_get (_tmp14_, _tmp15_);
-			c = (EngineComponent*) _tmp16_;
-			_tmp17_ = c;
-			_tmp18_ = G_TYPE_FROM_INSTANCE ((GObject*) _tmp17_);
-			_tmp19_ = t;
-			if (_tmp18_ == _tmp19_) {
+			_tmp8_ = _c_list;
+			_tmp9_ = _c_index;
+			_tmp10_ = gee_list_get (_tmp8_, _tmp9_);
+			c = (EngineComponent*) _tmp10_;
+			_tmp11_ = c;
+			_tmp12_ = G_TYPE_FROM_INSTANCE ((GObject*) _tmp11_);
+			_tmp13_ = t;
+			if (_tmp12_ == _tmp13_) {
 				result = TRUE;
 				_g_object_unref0 (c);
 				_g_object_unref0 (_c_list);

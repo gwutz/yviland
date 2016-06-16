@@ -81,7 +81,7 @@ static gchar* tiled_object_real_node_name (GXmlSerializableObjectModel* base) {
 	gchar* result = NULL;
 	gchar* _tmp0_ = NULL;
 	self = (TiledObject*) base;
-	_tmp0_ = g_strdup ("Object");
+	_tmp0_ = g_strdup ("object");
 	result = _tmp0_;
 	return result;
 }

@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <SDL2/SDL_rect.h>
-#include <stdio.h>
 #include <gee.h>
 
 
@@ -140,10 +139,11 @@ gint tiled_map_get_width (TiledMap* self);
 gint tiled_map_get_height (TiledMap* self);
 gint tiled_map_get_tilewidth (TiledMap* self);
 gint tiled_map_get_tileheight (TiledMap* self);
-gboolean tiled_map_collidesWith (TiledMap* self, SDL_Rect* box);
+gboolean tiled_map_collidesHorizontal (TiledMap* self, SDL_Rect* box);
 GType tiled_tile_get_type (void) G_GNUC_CONST;
 TiledTile* tiled_map_getTileAt (TiledMap* self, gint x, gint y);
 gint tiled_tile_get_gid (TiledTile* self);
+gboolean tiled_map_collidesWith (TiledMap* self, SDL_Rect* box);
 GXmlSerializableArrayList* tiled_map_get_layer (TiledMap* self);
 GType tiled_data_get_type (void) G_GNUC_CONST;
 TiledData* tiled_layer_get_data (TiledLayer* self);
@@ -306,7 +306,7 @@ static gchar* tiled_map_real_to_string (GXmlSerializableObjectModel* base) {
 }
 
 
-gboolean tiled_map_collidesWith (TiledMap* self, SDL_Rect* box) {
+gboolean tiled_map_collidesHorizontal (TiledMap* self, SDL_Rect* box) {
 	gboolean result = FALSE;
 	gint bottom = 0;
 	SDL_Rect _tmp0_ = {0};
@@ -324,6 +324,14 @@ gboolean tiled_map_collidesWith (TiledMap* self, SDL_Rect* box) {
 	TiledTile* _tmp11_ = NULL;
 	gint _tmp12_ = 0;
 	gint _tmp13_ = 0;
+	SDL_Rect _tmp30_ = {0};
+	gint _tmp31_ = 0;
+	gint _tmp32_ = 0;
+	TiledTile* _tmp33_ = NULL;
+	gboolean _tmp34_ = FALSE;
+	TiledTile* _tmp35_ = NULL;
+	gint _tmp36_ = 0;
+	gint _tmp37_ = 0;
 	g_return_val_if_fail (self != NULL, FALSE);
 	g_return_val_if_fail (box != NULL, FALSE);
 	_tmp0_ = *box;
@@ -386,9 +394,223 @@ gboolean tiled_map_collidesWith (TiledMap* self, SDL_Rect* box) {
 		_tmp28_ = tilebox;
 		_tmp29_ = SDL_HasIntersection (box, &_tmp28_);
 		if (_tmp29_) {
-			FILE* _tmp30_ = NULL;
-			_tmp30_ = stdout;
-			fprintf (_tmp30_, "collision!");
+			result = TRUE;
+			_g_object_unref0 (t);
+			return result;
+		}
+	}
+	_tmp30_ = *box;
+	_tmp31_ = _tmp30_.x;
+	_tmp32_ = bottom;
+	_tmp33_ = tiled_map_getTileAt (self, _tmp31_, _tmp32_);
+	_g_object_unref0 (t);
+	t = _tmp33_;
+	_tmp35_ = t;
+	_tmp36_ = tiled_tile_get_gid (_tmp35_);
+	_tmp37_ = _tmp36_;
+	if (_tmp37_ < 128) {
+		TiledTile* _tmp38_ = NULL;
+		gint _tmp39_ = 0;
+		gint _tmp40_ = 0;
+		_tmp38_ = t;
+		_tmp39_ = tiled_tile_get_gid (_tmp38_);
+		_tmp40_ = _tmp39_;
+		_tmp34_ = _tmp40_ > 0;
+	} else {
+		_tmp34_ = FALSE;
+	}
+	if (_tmp34_) {
+		SDL_Rect tilebox = {0};
+		SDL_Rect _tmp41_ = {0};
+		gint _tmp42_ = 0;
+		gint _tmp43_ = 0;
+		gint _tmp44_ = 0;
+		SDL_Rect _tmp45_ = {0};
+		gint _tmp46_ = 0;
+		gint _tmp47_ = 0;
+		gint _tmp48_ = 0;
+		gint _tmp49_ = 0;
+		gint _tmp50_ = 0;
+		SDL_Rect _tmp51_ = {0};
+		SDL_Rect _tmp52_ = {0};
+		gboolean _tmp53_ = FALSE;
+		_tmp41_ = *box;
+		_tmp42_ = _tmp41_.x;
+		_tmp43_ = self->priv->_tilewidth;
+		_tmp44_ = self->priv->_tilewidth;
+		_tmp45_ = *box;
+		_tmp46_ = _tmp45_.y;
+		_tmp47_ = self->priv->_tileheight;
+		_tmp48_ = self->priv->_tileheight;
+		_tmp49_ = self->priv->_tilewidth;
+		_tmp50_ = self->priv->_tileheight;
+		memset (&_tmp51_, 0, sizeof (SDL_Rect));
+		_tmp51_.x = (_tmp42_ / _tmp43_) * _tmp44_;
+		_tmp51_.y = (_tmp46_ / _tmp47_) * _tmp48_;
+		_tmp51_.w = (guint) _tmp49_;
+		_tmp51_.h = (guint) _tmp50_;
+		tilebox = _tmp51_;
+		_tmp52_ = tilebox;
+		_tmp53_ = SDL_HasIntersection (box, &_tmp52_);
+		if (_tmp53_) {
+			result = TRUE;
+			_g_object_unref0 (t);
+			return result;
+		}
+	}
+	result = FALSE;
+	_g_object_unref0 (t);
+	return result;
+}
+
+
+gboolean tiled_map_collidesWith (TiledMap* self, SDL_Rect* box) {
+	gboolean result = FALSE;
+	gint bottom = 0;
+	SDL_Rect _tmp0_ = {0};
+	gint _tmp1_ = 0;
+	SDL_Rect _tmp2_ = {0};
+	guint _tmp3_ = 0U;
+	TiledTile* t = NULL;
+	SDL_Rect _tmp4_ = {0};
+	gint _tmp5_ = 0;
+	gint _tmp6_ = 0;
+	TiledTile* _tmp7_ = NULL;
+	gboolean _tmp8_ = FALSE;
+	TiledTile* _tmp9_ = NULL;
+	gint _tmp10_ = 0;
+	gint _tmp11_ = 0;
+	SDL_Rect _tmp28_ = {0};
+	gint _tmp29_ = 0;
+	SDL_Rect _tmp30_ = {0};
+	guint _tmp31_ = 0U;
+	gint _tmp32_ = 0;
+	TiledTile* _tmp33_ = NULL;
+	gboolean _tmp34_ = FALSE;
+	TiledTile* _tmp35_ = NULL;
+	gint _tmp36_ = 0;
+	gint _tmp37_ = 0;
+	g_return_val_if_fail (self != NULL, FALSE);
+	g_return_val_if_fail (box != NULL, FALSE);
+	_tmp0_ = *box;
+	_tmp1_ = _tmp0_.y;
+	_tmp2_ = *box;
+	_tmp3_ = _tmp2_.h;
+	bottom = _tmp1_ + ((gint) _tmp3_);
+	_tmp4_ = *box;
+	_tmp5_ = _tmp4_.x;
+	_tmp6_ = bottom;
+	_tmp7_ = tiled_map_getTileAt (self, _tmp5_, _tmp6_);
+	t = _tmp7_;
+	_tmp9_ = t;
+	_tmp10_ = tiled_tile_get_gid (_tmp9_);
+	_tmp11_ = _tmp10_;
+	if (_tmp11_ < 128) {
+		TiledTile* _tmp12_ = NULL;
+		gint _tmp13_ = 0;
+		gint _tmp14_ = 0;
+		_tmp12_ = t;
+		_tmp13_ = tiled_tile_get_gid (_tmp12_);
+		_tmp14_ = _tmp13_;
+		_tmp8_ = _tmp14_ > 0;
+	} else {
+		_tmp8_ = FALSE;
+	}
+	if (_tmp8_) {
+		SDL_Rect tilebox = {0};
+		SDL_Rect _tmp15_ = {0};
+		gint _tmp16_ = 0;
+		gint _tmp17_ = 0;
+		gint _tmp18_ = 0;
+		SDL_Rect _tmp19_ = {0};
+		gint _tmp20_ = 0;
+		gint _tmp21_ = 0;
+		gint _tmp22_ = 0;
+		gint _tmp23_ = 0;
+		gint _tmp24_ = 0;
+		SDL_Rect _tmp25_ = {0};
+		SDL_Rect _tmp26_ = {0};
+		gboolean _tmp27_ = FALSE;
+		_tmp15_ = *box;
+		_tmp16_ = _tmp15_.x;
+		_tmp17_ = self->priv->_tilewidth;
+		_tmp18_ = self->priv->_tilewidth;
+		_tmp19_ = *box;
+		_tmp20_ = _tmp19_.y;
+		_tmp21_ = self->priv->_tileheight;
+		_tmp22_ = self->priv->_tileheight;
+		_tmp23_ = self->priv->_tilewidth;
+		_tmp24_ = self->priv->_tileheight;
+		memset (&_tmp25_, 0, sizeof (SDL_Rect));
+		_tmp25_.x = (_tmp16_ / _tmp17_) * _tmp18_;
+		_tmp25_.y = ((_tmp20_ / _tmp21_) * _tmp22_) + 2;
+		_tmp25_.w = (guint) _tmp23_;
+		_tmp25_.h = (guint) _tmp24_;
+		tilebox = _tmp25_;
+		_tmp26_ = tilebox;
+		_tmp27_ = SDL_HasIntersection (box, &_tmp26_);
+		if (_tmp27_) {
+			result = TRUE;
+			_g_object_unref0 (t);
+			return result;
+		}
+	}
+	_tmp28_ = *box;
+	_tmp29_ = _tmp28_.x;
+	_tmp30_ = *box;
+	_tmp31_ = _tmp30_.w;
+	_tmp32_ = bottom;
+	_tmp33_ = tiled_map_getTileAt (self, _tmp29_ + ((gint) _tmp31_), _tmp32_);
+	_g_object_unref0 (t);
+	t = _tmp33_;
+	_tmp35_ = t;
+	_tmp36_ = tiled_tile_get_gid (_tmp35_);
+	_tmp37_ = _tmp36_;
+	if (_tmp37_ < 128) {
+		TiledTile* _tmp38_ = NULL;
+		gint _tmp39_ = 0;
+		gint _tmp40_ = 0;
+		_tmp38_ = t;
+		_tmp39_ = tiled_tile_get_gid (_tmp38_);
+		_tmp40_ = _tmp39_;
+		_tmp34_ = _tmp40_ > 0;
+	} else {
+		_tmp34_ = FALSE;
+	}
+	if (_tmp34_) {
+		SDL_Rect tilebox = {0};
+		SDL_Rect _tmp41_ = {0};
+		gint _tmp42_ = 0;
+		gint _tmp43_ = 0;
+		gint _tmp44_ = 0;
+		SDL_Rect _tmp45_ = {0};
+		gint _tmp46_ = 0;
+		gint _tmp47_ = 0;
+		gint _tmp48_ = 0;
+		gint _tmp49_ = 0;
+		gint _tmp50_ = 0;
+		SDL_Rect _tmp51_ = {0};
+		SDL_Rect _tmp52_ = {0};
+		gboolean _tmp53_ = FALSE;
+		_tmp41_ = *box;
+		_tmp42_ = _tmp41_.x;
+		_tmp43_ = self->priv->_tilewidth;
+		_tmp44_ = self->priv->_tilewidth;
+		_tmp45_ = *box;
+		_tmp46_ = _tmp45_.y;
+		_tmp47_ = self->priv->_tileheight;
+		_tmp48_ = self->priv->_tileheight;
+		_tmp49_ = self->priv->_tilewidth;
+		_tmp50_ = self->priv->_tileheight;
+		memset (&_tmp51_, 0, sizeof (SDL_Rect));
+		_tmp51_.x = (_tmp42_ / _tmp43_) * _tmp44_;
+		_tmp51_.y = ((_tmp46_ / _tmp47_) * _tmp48_) + 2;
+		_tmp51_.w = (guint) _tmp49_;
+		_tmp51_.h = (guint) _tmp50_;
+		tilebox = _tmp51_;
+		_tmp52_ = tilebox;
+		_tmp53_ = SDL_HasIntersection (box, &_tmp52_);
+		if (_tmp53_) {
 			result = TRUE;
 			_g_object_unref0 (t);
 			return result;
@@ -425,7 +647,7 @@ TiledTile* tiled_map_getTileAt (TiledMap* self, gint x, gint y) {
 	xnum = _tmp0_ / _tmp1_;
 	_tmp2_ = y;
 	_tmp3_ = self->priv->_tileheight;
-	ynum = (_tmp2_ / _tmp3_) + 1;
+	ynum = _tmp2_ / _tmp3_;
 	_tmp4_ = self->priv->_width;
 	tilenumber = xnum + (ynum * _tmp4_);
 	_tmp5_ = self->priv->_layer;
@@ -464,7 +686,7 @@ static gchar* tiled_map_getRectAsString (TiledMap* self, SDL_Rect* rect) {
 	_tmp5_ = _tmp4_.w;
 	_tmp6_ = *rect;
 	_tmp7_ = _tmp6_.h;
-	_tmp8_ = g_strdup_printf ("%d, %d, %u, %u", _tmp1_, _tmp3_, _tmp5_, _tmp7_);
+	_tmp8_ = g_strdup_printf ("%d, %d, %u, %u\n", _tmp1_, _tmp3_, _tmp5_, _tmp7_);
 	result = _tmp8_;
 	return result;
 }

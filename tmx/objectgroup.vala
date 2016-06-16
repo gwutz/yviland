@@ -1,7 +1,7 @@
 namespace Tiled{
     public class Objectgroup : GXml.SerializableObjectModel {
         public string name { get ; set ; }
-        public GXml.SerializableArrayList<Object> objects { get ; set ; }
+        public GXml.SerializableArrayList<Object> objects { get ; set ; default = new GXml.SerializableArrayList<Object>();}
 
         public override string node_name() {
             return "Objectgroup" ;

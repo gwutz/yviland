@@ -40,8 +40,7 @@ namespace Tiled{
             return @"Map: $version $orientation $renderorder $width $height $tilewidth $tileheight";
         }
 
-        public bool collidesWith(SDL.Video.Rect box) {
-            // check bottom
+        public bool collidesHorizontal(SDL.Video.Rect box) {
             var bottom = box.y + (int)box.h;
             Tile t = getTileAt(box.x+(int)box.w, bottom);
 
@@ -54,22 +53,74 @@ namespace Tiled{
                 };
                 //stdout.printf(getRectAsString(tilebox));
                 if(box.is_intersecting(tilebox)) {
-                    stdout.printf("collision!");
                     return true;
                 }
             }
+
+            t = getTileAt(box.x, bottom);
+
+            if(t.gid < 128 && t.gid > 0) {
+                var tilebox = SDL.Video.Rect() {
+                    x = (box.x / tilewidth) * tilewidth,
+                    y = (box.y / tileheight) * tileheight,
+                    w = tilewidth,
+                    h = tileheight
+                };
+                //stdout.printf(getRectAsString(tilebox));
+                if(box.is_intersecting(tilebox)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool collidesWith(SDL.Video.Rect box) {
+            // check bottom left
+            var bottom = box.y + (int)box.h;
+            Tile t = getTileAt(box.x, bottom);
+
+            if(t.gid < 128 && t.gid > 0) {
+                var tilebox = SDL.Video.Rect() {
+                    x = (box.x / tilewidth) * tilewidth,
+                    y = (box.y / tileheight) * tileheight + 2,
+                    w = tilewidth,
+                    h = tileheight
+                };
+                //stdout.printf(getRectAsString(tilebox));
+                if(box.is_intersecting(tilebox)) {
+                    return true;
+                }
+            }
+
+            t = getTileAt(box.x+(int)box.w, bottom);
+
+            if(t.gid < 128 && t.gid > 0) {
+                var tilebox = SDL.Video.Rect() {
+                    x = (box.x / tilewidth) * tilewidth,
+                    y = (box.y / tileheight) * tileheight +2,
+                    w = tilewidth,
+                    h = tileheight
+                };
+
+                if(box.is_intersecting(tilebox)) {
+                    return true;
+                }
+            }
+
             return false;
         }
 
         public Tile getTileAt(int x, int y) {
             var xnum = x / tilewidth;
-            var ynum = y / tileheight + 1;
+            var ynum = y / tileheight;
+            //stdout.printf(@"$xnum $ynum $height $width\n");
             var tilenumber = xnum + ynum * width;
             return layer[0].data.tiles[tilenumber];
         }
 
         private string getRectAsString(SDL.Video.Rect rect) {
-            return "%d, %d, %u, %u".printf(rect.x, rect.y, rect.w, rect.h);
+            return "%d, %d, %u, %u\n".printf(rect.x, rect.y, rect.w, rect.h);
         }
     }
 }

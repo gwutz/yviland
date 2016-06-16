@@ -2,11 +2,13 @@ using SDL.Video;
 
 public class RenderComponent : Engine.Component {
     public string identifier;
+    public string sprite_filename;
     public uint w;
     public uint h;
 
-    public RenderComponent (string identifier, uint w, uint h) {
+    public RenderComponent (string identifier, string sprite_filename, uint w, uint h) {
         this.identifier = identifier;
+        this.sprite_filename = sprite_filename;
         this.w = w;
         this.h = h;
     }
@@ -17,7 +19,14 @@ public class RenderComponent : Engine.Component {
         texture.get_texture ().query (null, null, out this.w, out this.h);
     }
 
-    public void render(TextureManager texmanager, SDL.Video.Renderer renderer) {
+    public RenderComponent.withTexture2 (string identifier, string sprite_filename) {
+        this.identifier = identifier;
+        this.sprite_filename = sprite_filename;
+        //var texture = t.load (identifier, sprite_filename, renderer);
+        //texture.get_texture ().query (null, null, out this.w, out this.h);
+    }
+
+    /*public void render(TextureManager texmanager, SDL.Video.Renderer renderer) {
         var pos = entity.get_component<PositionComponent>();
         if( pos == null ){
             stdout.printf ("entity is missing a PositionComponent to get rendered\n");
@@ -51,6 +60,6 @@ public class RenderComponent : Engine.Component {
                 texmanager.draw (this.identifier, r, renderer);
             }
         }
-    }
+    }*/
 
 }

@@ -17,11 +17,14 @@ namespace Engine {
         public Gee.List<Entity> getEntitiesFor(Gee.List<Type> componenttypes) {
             Gee.List<Entity> family = new Gee.ArrayList<Entity>();
             foreach(Entity e in entities) {
+                bool allcomponents = true;
                 foreach(Type t in componenttypes) {
-                    if(e.has_component(t)) {
-                        family.add(e);
+                    if(!e.has_component(t)) {
+                        allcomponents = false;
                     }
                 }
+                if(allcomponents)
+                    family.add(e);
             }
 
             return family;

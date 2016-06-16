@@ -4,34 +4,39 @@ public class Testlevel : GameState {
 
     public Testlevel (TextureManager textureManager, Renderer renderer) {
         base ("data/testmap.tmx", textureManager, renderer);
+    }
+
+    public override void add_entities() {
+        base.add_entities();
 
         var e = this.engine.createEntity();
         e.add_component(new PositionComponent(10, 10));
-        //e.add_component(new RenderComponent.withTexture("player"))
-
-        // player Entity
-        var player = new Engine.Entity.with_name ("player");
-        player.add_component (new PositionComponent (10, 10));
-        player.add_component (new RenderComponent.withTexture ("player", "data/yvonne.png", textureManager, renderer));
-        player.add_component (new MovementComponent ());
-        var ani = new AnimationComponent.with_width (30);
-        ani.add_animation (new Animation ("still", 0, 3, 6));
-        ani.add_animation (new Animation ("running", 4, 6, 6));
-        player.add_component (ani);
-        var tmp = new CollisionComponent (11, 5, 8, 12);
-        tmp.collision = () => {
-            var pos = player.get_component<PositionComponent>();
-            pos.reset_position();
-        };
-        player.add_component (tmp);
-        player.add_component(new GravityComponent());
-
-        objects.set (player.name, player);
+        e.add_component(new RenderComponent("player", "data/yvonne.png", 30, 17));
+        e.add_component(new MovementComponent());
+        var ani = new AnimationComponent();
+        ani.add_animation (new Animation("still", 0, 3, 6));
+        ani.add_animation (new Animation("running", 4, 6, 6));
+        e.add_component(ani);
+        e.add_component(new CollisionComponent(11, 5, 8, 12));
     }
 
-    public override void update() {
+    public override void create_map(Engine.Entity mapentity) {
+        var map = mapentity.get_component<TilemapComponent2>();
+        foreach (Tiled.Objectgroup objgrp in map.map.objectgroup) {
+            if(objgrp.name == "qboxes") {
+                stdout.printf("size %d\n", objgrp.objects.size);
+                foreach (Tiled.Object o in objgrp.objects) {
+                    var e = this.engine.createEntity();
+                    e.add_component(new PositionComponent((int)o.x, (int)o.y));
+                    e.add_component(new RenderComponent("qbox", "data/qbox.png", 12, 12));
+                }
+            }
+        }
+    }
+
+    /*public override void update() {
         base.update();
-        /*Entity camera = objects.get("camera");
+        Entity camera = objects.get("camera");
 
         foreach( Entity e in this.objects.values ){
             if (e == camera) continue;
@@ -55,10 +60,10 @@ public class Testlevel : GameState {
                 }
             }
             collide (e, this.objects.values);
-        }*/
-    }
+        }
+    }*/
 
-    private void collide(Engine.Entity e, Gee.Collection<Engine.Entity> all) {
+    /*private void collide(Engine.Entity e, Gee.Collection<Engine.Entity> all) {
         var c1 = e.get_component<CollisionComponent>();
         if( c1 == null ){
             return;
@@ -74,6 +79,6 @@ public class Testlevel : GameState {
                 }
             }
         }
-    }
+    }*/
 
 }

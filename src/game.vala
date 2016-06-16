@@ -34,7 +34,7 @@ public class Game : GLib.Object {
                 break;
             }
         }
-        this.state.handle_events ();
+        //this.state.handle_events ();
 
     }
 

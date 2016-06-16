@@ -36,6 +36,7 @@ namespace Tiled {
 			HEXAGONAL
 		}
 		public Map ();
+		public bool collidesHorizontal (SDL.Video.Rect box);
 		public bool collidesWith (SDL.Video.Rect box);
 		public override bool deserialize_property (GXml.Node property_node) throws GLib.Error;
 		public Tiled.Tile getTileAt (int x, int y);

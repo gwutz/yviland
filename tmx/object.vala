@@ -8,7 +8,7 @@ namespace Tiled{
         public double height { get ; set ; }
 
         public override string node_name() {
-            return "Object" ;
+            return "object" ;
         }
 
         public override string to_string() {

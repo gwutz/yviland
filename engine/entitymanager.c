@@ -147,6 +147,8 @@ GeeList* engine_entity_manager_getEntitiesFor (EngineEntityManager* self, GeeLis
 			GeeList* _tmp9_ = NULL;
 			gint _tmp10_ = 0;
 			gpointer _tmp11_ = NULL;
+			gboolean allcomponents = FALSE;
+			gboolean _tmp26_ = FALSE;
 			_tmp6_ = _e_index;
 			_e_index = _tmp6_ + 1;
 			_tmp7_ = _e_index;
@@ -158,6 +160,7 @@ GeeList* engine_entity_manager_getEntitiesFor (EngineEntityManager* self, GeeLis
 			_tmp10_ = _e_index;
 			_tmp11_ = gee_list_get (_tmp9_, _tmp10_);
 			e = (EngineEntity*) _tmp11_;
+			allcomponents = TRUE;
 			{
 				GeeList* _t_list = NULL;
 				GeeList* _tmp12_ = NULL;
@@ -200,15 +203,19 @@ GeeList* engine_entity_manager_getEntitiesFor (EngineEntityManager* self, GeeLis
 					_tmp23_ = e;
 					_tmp24_ = t;
 					_tmp25_ = engine_entity_has_component (_tmp23_, _tmp24_);
-					if (_tmp25_) {
-						GeeList* _tmp26_ = NULL;
-						EngineEntity* _tmp27_ = NULL;
-						_tmp26_ = family;
-						_tmp27_ = e;
-						gee_collection_add ((GeeCollection*) _tmp26_, _tmp27_);
+					if (!_tmp25_) {
+						allcomponents = FALSE;
 					}
 				}
 				_g_object_unref0 (_t_list);
+			}
+			_tmp26_ = allcomponents;
+			if (_tmp26_) {
+				GeeList* _tmp27_ = NULL;
+				EngineEntity* _tmp28_ = NULL;
+				_tmp27_ = family;
+				_tmp28_ = e;
+				gee_collection_add ((GeeCollection*) _tmp27_, _tmp28_);
 			}
 			_g_object_unref0 (e);
 		}

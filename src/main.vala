@@ -1,6 +1,6 @@
 using Tiled;
 
-const int FRAMES_PER_SECOND = 60;
+const int FRAMES_PER_SECOND = 50;
 const int FRAMEDURATION = 1000 / FRAMES_PER_SECOND;
 
 public static void main(string[] argv) {

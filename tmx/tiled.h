@@ -213,6 +213,7 @@ TiledData* tiled_layer_get_data (TiledLayer* self);
 void tiled_layer_set_data (TiledLayer* self, TiledData* value);
 GType tiled_map_get_type (void) G_GNUC_CONST;
 GType tiled_map_orientation_get_type (void) G_GNUC_CONST;
+gboolean tiled_map_collidesHorizontal (TiledMap* self, SDL_Rect* box);
 gboolean tiled_map_collidesWith (TiledMap* self, SDL_Rect* box);
 TiledTile* tiled_map_getTileAt (TiledMap* self, gint x, gint y);
 TiledMap* tiled_map_new (void);

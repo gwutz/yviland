@@ -105,22 +105,24 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_yviland_OBJECTS = yviland-main.$(OBJEXT) \
+am_yviland_OBJECTS = yviland-main.$(OBJEXT) yviland-game.$(OBJEXT) \
+	yviland-gamestate.$(OBJEXT) yviland-camera.$(OBJEXT) \
+	yviland-texturemanager.$(OBJEXT) \
+	states/yviland-testlevel.$(OBJEXT) \
 	components/yviland-animationcomponent.$(OBJEXT) \
 	components/yviland-collisioncomponent.$(OBJEXT) \
-	yviland-game.$(OBJEXT) yviland-gamestate.$(OBJEXT) \
 	components/yviland-movementcomponent.$(OBJEXT) \
 	components/yviland-positioncomponent.$(OBJEXT) \
 	components/yviland-rendercomponent.$(OBJEXT) \
-	yviland-texturemanager.$(OBJEXT) \
 	components/yviland-tilemapcomponent.$(OBJEXT) \
 	components/yviland-tilemapcomponent2.$(OBJEXT) \
-	states/yviland-testlevel.$(OBJEXT) \
 	components/yviland-cameracomponent.$(OBJEXT) \
-	components/yviland-gravitycomponent.$(OBJEXT) \
 	systems/yviland-rendersystem.$(OBJEXT) \
 	systems/yviland-tilemaprendersystem.$(OBJEXT) \
-	yviland-camera.$(OBJEXT)
+	systems/yviland-texturesystem.$(OBJEXT) \
+	systems/yviland-movementsystem.$(OBJEXT) \
+	systems/yviland-animationsystem.$(OBJEXT) \
+	systems/yviland-collisionsystem.$(OBJEXT)
 yviland_OBJECTS = $(am_yviland_OBJECTS)
 am__DEPENDENCIES_1 =
 yviland_DEPENDENCIES = $(am__DEPENDENCIES_1) \
@@ -204,12 +206,13 @@ CTAGS = ctags
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/yviland_vala.stamp \
 	$(top_srcdir)/depcomp camera.c components/animationcomponent.c \
 	components/cameracomponent.c components/collisioncomponent.c \
-	components/gravitycomponent.c components/movementcomponent.c \
-	components/positioncomponent.c components/rendercomponent.c \
-	components/tilemapcomponent.c components/tilemapcomponent2.c \
-	game.c gamestate.c main.c states/testlevel.c \
-	systems/rendersystem.c systems/tilemaprendersystem.c \
-	texturemanager.c
+	components/movementcomponent.c components/positioncomponent.c \
+	components/rendercomponent.c components/tilemapcomponent.c \
+	components/tilemapcomponent2.c game.c gamestate.c main.c \
+	states/testlevel.c systems/animationsystem.c \
+	systems/collisionsystem.c systems/movementsystem.c \
+	systems/rendersystem.c systems/texturesystem.c \
+	systems/tilemaprendersystem.c texturemanager.c
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -342,22 +345,25 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 yviland_SOURCES = main.vala \
-		    components/animationcomponent.vala \
-		    components/collisioncomponent.vala \
 		    game.vala \
 		    gamestate.vala \
-		    components/movementcomponent.vala \
-		    components/positioncomponent.vala \
-		    components/rendercomponent.vala \
+				camera.vala \
 		    texturemanager.vala \
-		    components/tilemapcomponent.vala \
-				components/tilemapcomponent2.vala \
 		    states/testlevel.vala \
+				components/animationcomponent.vala \
+				components/collisioncomponent.vala \
+				components/movementcomponent.vala \
+				components/positioncomponent.vala \
+				components/rendercomponent.vala \
+				components/tilemapcomponent.vala \
+				components/tilemapcomponent2.vala \
 				components/cameracomponent.vala \
-				components/gravitycomponent.vala \
 				systems/rendersystem.vala \
 				systems/tilemaprendersystem.vala \
-				camera.vala \
+				systems/texturesystem.vala \
+				systems/movementsystem.vala \
+				systems/animationsystem.vala \
+				systems/collisionsystem.vala \
 		    $(NULL)
 
 yviland_VALAFLAGS = \
@@ -459,6 +465,14 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+states/$(am__dirstamp):
+	@$(MKDIR_P) states
+	@: > states/$(am__dirstamp)
+states/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) states/$(DEPDIR)
+	@: > states/$(DEPDIR)/$(am__dirstamp)
+states/yviland-testlevel.$(OBJEXT): states/$(am__dirstamp) \
+	states/$(DEPDIR)/$(am__dirstamp)
 components/$(am__dirstamp):
 	@$(MKDIR_P) components
 	@: > components/$(am__dirstamp)
@@ -486,18 +500,7 @@ components/yviland-tilemapcomponent.$(OBJEXT):  \
 components/yviland-tilemapcomponent2.$(OBJEXT):  \
 	components/$(am__dirstamp) \
 	components/$(DEPDIR)/$(am__dirstamp)
-states/$(am__dirstamp):
-	@$(MKDIR_P) states
-	@: > states/$(am__dirstamp)
-states/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) states/$(DEPDIR)
-	@: > states/$(DEPDIR)/$(am__dirstamp)
-states/yviland-testlevel.$(OBJEXT): states/$(am__dirstamp) \
-	states/$(DEPDIR)/$(am__dirstamp)
 components/yviland-cameracomponent.$(OBJEXT):  \
-	components/$(am__dirstamp) \
-	components/$(DEPDIR)/$(am__dirstamp)
-components/yviland-gravitycomponent.$(OBJEXT):  \
 	components/$(am__dirstamp) \
 	components/$(DEPDIR)/$(am__dirstamp)
 systems/$(am__dirstamp):
@@ -510,6 +513,14 @@ systems/yviland-rendersystem.$(OBJEXT): systems/$(am__dirstamp) \
 	systems/$(DEPDIR)/$(am__dirstamp)
 systems/yviland-tilemaprendersystem.$(OBJEXT):  \
 	systems/$(am__dirstamp) systems/$(DEPDIR)/$(am__dirstamp)
+systems/yviland-texturesystem.$(OBJEXT): systems/$(am__dirstamp) \
+	systems/$(DEPDIR)/$(am__dirstamp)
+systems/yviland-movementsystem.$(OBJEXT): systems/$(am__dirstamp) \
+	systems/$(DEPDIR)/$(am__dirstamp)
+systems/yviland-animationsystem.$(OBJEXT): systems/$(am__dirstamp) \
+	systems/$(DEPDIR)/$(am__dirstamp)
+systems/yviland-collisionsystem.$(OBJEXT): systems/$(am__dirstamp) \
+	systems/$(DEPDIR)/$(am__dirstamp)
 
 yviland$(EXEEXT): $(yviland_OBJECTS) $(yviland_DEPENDENCIES) $(EXTRA_yviland_DEPENDENCIES) 
 	@rm -f yviland$(EXEEXT)
@@ -532,14 +543,17 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-animationcomponent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-cameracomponent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-collisioncomponent.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-gravitycomponent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-movementcomponent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-positioncomponent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-rendercomponent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-tilemapcomponent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@components/$(DEPDIR)/yviland-tilemapcomponent2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@states/$(DEPDIR)/yviland-testlevel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@systems/$(DEPDIR)/yviland-animationsystem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@systems/$(DEPDIR)/yviland-collisionsystem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@systems/$(DEPDIR)/yviland-movementsystem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@systems/$(DEPDIR)/yviland-rendersystem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@systems/$(DEPDIR)/yviland-texturesystem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@systems/$(DEPDIR)/yviland-tilemaprendersystem.Po@am__quote@
 
 .c.o:
@@ -580,34 +594,6 @@ yviland-main.obj: main.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
 
-components/yviland-animationcomponent.o: components/animationcomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-animationcomponent.o -MD -MP -MF components/$(DEPDIR)/yviland-animationcomponent.Tpo -c -o components/yviland-animationcomponent.o `test -f 'components/animationcomponent.c' || echo '$(srcdir)/'`components/animationcomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-animationcomponent.Tpo components/$(DEPDIR)/yviland-animationcomponent.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/animationcomponent.c' object='components/yviland-animationcomponent.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-animationcomponent.o `test -f 'components/animationcomponent.c' || echo '$(srcdir)/'`components/animationcomponent.c
-
-components/yviland-animationcomponent.obj: components/animationcomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-animationcomponent.obj -MD -MP -MF components/$(DEPDIR)/yviland-animationcomponent.Tpo -c -o components/yviland-animationcomponent.obj `if test -f 'components/animationcomponent.c'; then $(CYGPATH_W) 'components/animationcomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/animationcomponent.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-animationcomponent.Tpo components/$(DEPDIR)/yviland-animationcomponent.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/animationcomponent.c' object='components/yviland-animationcomponent.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-animationcomponent.obj `if test -f 'components/animationcomponent.c'; then $(CYGPATH_W) 'components/animationcomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/animationcomponent.c'; fi`
-
-components/yviland-collisioncomponent.o: components/collisioncomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-collisioncomponent.o -MD -MP -MF components/$(DEPDIR)/yviland-collisioncomponent.Tpo -c -o components/yviland-collisioncomponent.o `test -f 'components/collisioncomponent.c' || echo '$(srcdir)/'`components/collisioncomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-collisioncomponent.Tpo components/$(DEPDIR)/yviland-collisioncomponent.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/collisioncomponent.c' object='components/yviland-collisioncomponent.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-collisioncomponent.o `test -f 'components/collisioncomponent.c' || echo '$(srcdir)/'`components/collisioncomponent.c
-
-components/yviland-collisioncomponent.obj: components/collisioncomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-collisioncomponent.obj -MD -MP -MF components/$(DEPDIR)/yviland-collisioncomponent.Tpo -c -o components/yviland-collisioncomponent.obj `if test -f 'components/collisioncomponent.c'; then $(CYGPATH_W) 'components/collisioncomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/collisioncomponent.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-collisioncomponent.Tpo components/$(DEPDIR)/yviland-collisioncomponent.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/collisioncomponent.c' object='components/yviland-collisioncomponent.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-collisioncomponent.obj `if test -f 'components/collisioncomponent.c'; then $(CYGPATH_W) 'components/collisioncomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/collisioncomponent.c'; fi`
-
 yviland-game.o: game.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-game.o -MD -MP -MF $(DEPDIR)/yviland-game.Tpo -c -o yviland-game.o `test -f 'game.c' || echo '$(srcdir)/'`game.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-game.Tpo $(DEPDIR)/yviland-game.Po
@@ -635,6 +621,76 @@ yviland-gamestate.obj: gamestate.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gamestate.c' object='yviland-gamestate.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-gamestate.obj `if test -f 'gamestate.c'; then $(CYGPATH_W) 'gamestate.c'; else $(CYGPATH_W) '$(srcdir)/gamestate.c'; fi`
+
+yviland-camera.o: camera.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-camera.o -MD -MP -MF $(DEPDIR)/yviland-camera.Tpo -c -o yviland-camera.o `test -f 'camera.c' || echo '$(srcdir)/'`camera.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-camera.Tpo $(DEPDIR)/yviland-camera.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='camera.c' object='yviland-camera.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-camera.o `test -f 'camera.c' || echo '$(srcdir)/'`camera.c
+
+yviland-camera.obj: camera.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-camera.obj -MD -MP -MF $(DEPDIR)/yviland-camera.Tpo -c -o yviland-camera.obj `if test -f 'camera.c'; then $(CYGPATH_W) 'camera.c'; else $(CYGPATH_W) '$(srcdir)/camera.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-camera.Tpo $(DEPDIR)/yviland-camera.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='camera.c' object='yviland-camera.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-camera.obj `if test -f 'camera.c'; then $(CYGPATH_W) 'camera.c'; else $(CYGPATH_W) '$(srcdir)/camera.c'; fi`
+
+yviland-texturemanager.o: texturemanager.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-texturemanager.o -MD -MP -MF $(DEPDIR)/yviland-texturemanager.Tpo -c -o yviland-texturemanager.o `test -f 'texturemanager.c' || echo '$(srcdir)/'`texturemanager.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-texturemanager.Tpo $(DEPDIR)/yviland-texturemanager.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='texturemanager.c' object='yviland-texturemanager.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-texturemanager.o `test -f 'texturemanager.c' || echo '$(srcdir)/'`texturemanager.c
+
+yviland-texturemanager.obj: texturemanager.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-texturemanager.obj -MD -MP -MF $(DEPDIR)/yviland-texturemanager.Tpo -c -o yviland-texturemanager.obj `if test -f 'texturemanager.c'; then $(CYGPATH_W) 'texturemanager.c'; else $(CYGPATH_W) '$(srcdir)/texturemanager.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-texturemanager.Tpo $(DEPDIR)/yviland-texturemanager.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='texturemanager.c' object='yviland-texturemanager.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-texturemanager.obj `if test -f 'texturemanager.c'; then $(CYGPATH_W) 'texturemanager.c'; else $(CYGPATH_W) '$(srcdir)/texturemanager.c'; fi`
+
+states/yviland-testlevel.o: states/testlevel.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT states/yviland-testlevel.o -MD -MP -MF states/$(DEPDIR)/yviland-testlevel.Tpo -c -o states/yviland-testlevel.o `test -f 'states/testlevel.c' || echo '$(srcdir)/'`states/testlevel.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) states/$(DEPDIR)/yviland-testlevel.Tpo states/$(DEPDIR)/yviland-testlevel.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='states/testlevel.c' object='states/yviland-testlevel.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o states/yviland-testlevel.o `test -f 'states/testlevel.c' || echo '$(srcdir)/'`states/testlevel.c
+
+states/yviland-testlevel.obj: states/testlevel.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT states/yviland-testlevel.obj -MD -MP -MF states/$(DEPDIR)/yviland-testlevel.Tpo -c -o states/yviland-testlevel.obj `if test -f 'states/testlevel.c'; then $(CYGPATH_W) 'states/testlevel.c'; else $(CYGPATH_W) '$(srcdir)/states/testlevel.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) states/$(DEPDIR)/yviland-testlevel.Tpo states/$(DEPDIR)/yviland-testlevel.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='states/testlevel.c' object='states/yviland-testlevel.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o states/yviland-testlevel.obj `if test -f 'states/testlevel.c'; then $(CYGPATH_W) 'states/testlevel.c'; else $(CYGPATH_W) '$(srcdir)/states/testlevel.c'; fi`
+
+components/yviland-animationcomponent.o: components/animationcomponent.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-animationcomponent.o -MD -MP -MF components/$(DEPDIR)/yviland-animationcomponent.Tpo -c -o components/yviland-animationcomponent.o `test -f 'components/animationcomponent.c' || echo '$(srcdir)/'`components/animationcomponent.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-animationcomponent.Tpo components/$(DEPDIR)/yviland-animationcomponent.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/animationcomponent.c' object='components/yviland-animationcomponent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-animationcomponent.o `test -f 'components/animationcomponent.c' || echo '$(srcdir)/'`components/animationcomponent.c
+
+components/yviland-animationcomponent.obj: components/animationcomponent.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-animationcomponent.obj -MD -MP -MF components/$(DEPDIR)/yviland-animationcomponent.Tpo -c -o components/yviland-animationcomponent.obj `if test -f 'components/animationcomponent.c'; then $(CYGPATH_W) 'components/animationcomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/animationcomponent.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-animationcomponent.Tpo components/$(DEPDIR)/yviland-animationcomponent.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/animationcomponent.c' object='components/yviland-animationcomponent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-animationcomponent.obj `if test -f 'components/animationcomponent.c'; then $(CYGPATH_W) 'components/animationcomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/animationcomponent.c'; fi`
+
+components/yviland-collisioncomponent.o: components/collisioncomponent.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-collisioncomponent.o -MD -MP -MF components/$(DEPDIR)/yviland-collisioncomponent.Tpo -c -o components/yviland-collisioncomponent.o `test -f 'components/collisioncomponent.c' || echo '$(srcdir)/'`components/collisioncomponent.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-collisioncomponent.Tpo components/$(DEPDIR)/yviland-collisioncomponent.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/collisioncomponent.c' object='components/yviland-collisioncomponent.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-collisioncomponent.o `test -f 'components/collisioncomponent.c' || echo '$(srcdir)/'`components/collisioncomponent.c
+
+components/yviland-collisioncomponent.obj: components/collisioncomponent.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-collisioncomponent.obj -MD -MP -MF components/$(DEPDIR)/yviland-collisioncomponent.Tpo -c -o components/yviland-collisioncomponent.obj `if test -f 'components/collisioncomponent.c'; then $(CYGPATH_W) 'components/collisioncomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/collisioncomponent.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-collisioncomponent.Tpo components/$(DEPDIR)/yviland-collisioncomponent.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/collisioncomponent.c' object='components/yviland-collisioncomponent.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-collisioncomponent.obj `if test -f 'components/collisioncomponent.c'; then $(CYGPATH_W) 'components/collisioncomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/collisioncomponent.c'; fi`
 
 components/yviland-movementcomponent.o: components/movementcomponent.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-movementcomponent.o -MD -MP -MF components/$(DEPDIR)/yviland-movementcomponent.Tpo -c -o components/yviland-movementcomponent.o `test -f 'components/movementcomponent.c' || echo '$(srcdir)/'`components/movementcomponent.c
@@ -678,20 +734,6 @@ components/yviland-rendercomponent.obj: components/rendercomponent.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-rendercomponent.obj `if test -f 'components/rendercomponent.c'; then $(CYGPATH_W) 'components/rendercomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/rendercomponent.c'; fi`
 
-yviland-texturemanager.o: texturemanager.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-texturemanager.o -MD -MP -MF $(DEPDIR)/yviland-texturemanager.Tpo -c -o yviland-texturemanager.o `test -f 'texturemanager.c' || echo '$(srcdir)/'`texturemanager.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-texturemanager.Tpo $(DEPDIR)/yviland-texturemanager.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='texturemanager.c' object='yviland-texturemanager.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-texturemanager.o `test -f 'texturemanager.c' || echo '$(srcdir)/'`texturemanager.c
-
-yviland-texturemanager.obj: texturemanager.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-texturemanager.obj -MD -MP -MF $(DEPDIR)/yviland-texturemanager.Tpo -c -o yviland-texturemanager.obj `if test -f 'texturemanager.c'; then $(CYGPATH_W) 'texturemanager.c'; else $(CYGPATH_W) '$(srcdir)/texturemanager.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-texturemanager.Tpo $(DEPDIR)/yviland-texturemanager.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='texturemanager.c' object='yviland-texturemanager.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-texturemanager.obj `if test -f 'texturemanager.c'; then $(CYGPATH_W) 'texturemanager.c'; else $(CYGPATH_W) '$(srcdir)/texturemanager.c'; fi`
-
 components/yviland-tilemapcomponent.o: components/tilemapcomponent.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-tilemapcomponent.o -MD -MP -MF components/$(DEPDIR)/yviland-tilemapcomponent.Tpo -c -o components/yviland-tilemapcomponent.o `test -f 'components/tilemapcomponent.c' || echo '$(srcdir)/'`components/tilemapcomponent.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-tilemapcomponent.Tpo components/$(DEPDIR)/yviland-tilemapcomponent.Po
@@ -720,20 +762,6 @@ components/yviland-tilemapcomponent2.obj: components/tilemapcomponent2.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-tilemapcomponent2.obj `if test -f 'components/tilemapcomponent2.c'; then $(CYGPATH_W) 'components/tilemapcomponent2.c'; else $(CYGPATH_W) '$(srcdir)/components/tilemapcomponent2.c'; fi`
 
-states/yviland-testlevel.o: states/testlevel.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT states/yviland-testlevel.o -MD -MP -MF states/$(DEPDIR)/yviland-testlevel.Tpo -c -o states/yviland-testlevel.o `test -f 'states/testlevel.c' || echo '$(srcdir)/'`states/testlevel.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) states/$(DEPDIR)/yviland-testlevel.Tpo states/$(DEPDIR)/yviland-testlevel.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='states/testlevel.c' object='states/yviland-testlevel.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o states/yviland-testlevel.o `test -f 'states/testlevel.c' || echo '$(srcdir)/'`states/testlevel.c
-
-states/yviland-testlevel.obj: states/testlevel.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT states/yviland-testlevel.obj -MD -MP -MF states/$(DEPDIR)/yviland-testlevel.Tpo -c -o states/yviland-testlevel.obj `if test -f 'states/testlevel.c'; then $(CYGPATH_W) 'states/testlevel.c'; else $(CYGPATH_W) '$(srcdir)/states/testlevel.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) states/$(DEPDIR)/yviland-testlevel.Tpo states/$(DEPDIR)/yviland-testlevel.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='states/testlevel.c' object='states/yviland-testlevel.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o states/yviland-testlevel.obj `if test -f 'states/testlevel.c'; then $(CYGPATH_W) 'states/testlevel.c'; else $(CYGPATH_W) '$(srcdir)/states/testlevel.c'; fi`
-
 components/yviland-cameracomponent.o: components/cameracomponent.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-cameracomponent.o -MD -MP -MF components/$(DEPDIR)/yviland-cameracomponent.Tpo -c -o components/yviland-cameracomponent.o `test -f 'components/cameracomponent.c' || echo '$(srcdir)/'`components/cameracomponent.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-cameracomponent.Tpo components/$(DEPDIR)/yviland-cameracomponent.Po
@@ -747,20 +775,6 @@ components/yviland-cameracomponent.obj: components/cameracomponent.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/cameracomponent.c' object='components/yviland-cameracomponent.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-cameracomponent.obj `if test -f 'components/cameracomponent.c'; then $(CYGPATH_W) 'components/cameracomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/cameracomponent.c'; fi`
-
-components/yviland-gravitycomponent.o: components/gravitycomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-gravitycomponent.o -MD -MP -MF components/$(DEPDIR)/yviland-gravitycomponent.Tpo -c -o components/yviland-gravitycomponent.o `test -f 'components/gravitycomponent.c' || echo '$(srcdir)/'`components/gravitycomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-gravitycomponent.Tpo components/$(DEPDIR)/yviland-gravitycomponent.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/gravitycomponent.c' object='components/yviland-gravitycomponent.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-gravitycomponent.o `test -f 'components/gravitycomponent.c' || echo '$(srcdir)/'`components/gravitycomponent.c
-
-components/yviland-gravitycomponent.obj: components/gravitycomponent.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT components/yviland-gravitycomponent.obj -MD -MP -MF components/$(DEPDIR)/yviland-gravitycomponent.Tpo -c -o components/yviland-gravitycomponent.obj `if test -f 'components/gravitycomponent.c'; then $(CYGPATH_W) 'components/gravitycomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/gravitycomponent.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) components/$(DEPDIR)/yviland-gravitycomponent.Tpo components/$(DEPDIR)/yviland-gravitycomponent.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='components/gravitycomponent.c' object='components/yviland-gravitycomponent.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o components/yviland-gravitycomponent.obj `if test -f 'components/gravitycomponent.c'; then $(CYGPATH_W) 'components/gravitycomponent.c'; else $(CYGPATH_W) '$(srcdir)/components/gravitycomponent.c'; fi`
 
 systems/yviland-rendersystem.o: systems/rendersystem.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-rendersystem.o -MD -MP -MF systems/$(DEPDIR)/yviland-rendersystem.Tpo -c -o systems/yviland-rendersystem.o `test -f 'systems/rendersystem.c' || echo '$(srcdir)/'`systems/rendersystem.c
@@ -790,30 +804,62 @@ systems/yviland-tilemaprendersystem.obj: systems/tilemaprendersystem.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-tilemaprendersystem.obj `if test -f 'systems/tilemaprendersystem.c'; then $(CYGPATH_W) 'systems/tilemaprendersystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/tilemaprendersystem.c'; fi`
 
-yviland-camera.o: camera.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-camera.o -MD -MP -MF $(DEPDIR)/yviland-camera.Tpo -c -o yviland-camera.o `test -f 'camera.c' || echo '$(srcdir)/'`camera.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-camera.Tpo $(DEPDIR)/yviland-camera.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='camera.c' object='yviland-camera.o' libtool=no @AMDEPBACKSLASH@
+systems/yviland-texturesystem.o: systems/texturesystem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-texturesystem.o -MD -MP -MF systems/$(DEPDIR)/yviland-texturesystem.Tpo -c -o systems/yviland-texturesystem.o `test -f 'systems/texturesystem.c' || echo '$(srcdir)/'`systems/texturesystem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) systems/$(DEPDIR)/yviland-texturesystem.Tpo systems/$(DEPDIR)/yviland-texturesystem.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='systems/texturesystem.c' object='systems/yviland-texturesystem.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-camera.o `test -f 'camera.c' || echo '$(srcdir)/'`camera.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-texturesystem.o `test -f 'systems/texturesystem.c' || echo '$(srcdir)/'`systems/texturesystem.c
 
-yviland-camera.obj: camera.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT yviland-camera.obj -MD -MP -MF $(DEPDIR)/yviland-camera.Tpo -c -o yviland-camera.obj `if test -f 'camera.c'; then $(CYGPATH_W) 'camera.c'; else $(CYGPATH_W) '$(srcdir)/camera.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/yviland-camera.Tpo $(DEPDIR)/yviland-camera.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='camera.c' object='yviland-camera.obj' libtool=no @AMDEPBACKSLASH@
+systems/yviland-texturesystem.obj: systems/texturesystem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-texturesystem.obj -MD -MP -MF systems/$(DEPDIR)/yviland-texturesystem.Tpo -c -o systems/yviland-texturesystem.obj `if test -f 'systems/texturesystem.c'; then $(CYGPATH_W) 'systems/texturesystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/texturesystem.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) systems/$(DEPDIR)/yviland-texturesystem.Tpo systems/$(DEPDIR)/yviland-texturesystem.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='systems/texturesystem.c' object='systems/yviland-texturesystem.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o yviland-camera.obj `if test -f 'camera.c'; then $(CYGPATH_W) 'camera.c'; else $(CYGPATH_W) '$(srcdir)/camera.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-texturesystem.obj `if test -f 'systems/texturesystem.c'; then $(CYGPATH_W) 'systems/texturesystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/texturesystem.c'; fi`
+
+systems/yviland-movementsystem.o: systems/movementsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-movementsystem.o -MD -MP -MF systems/$(DEPDIR)/yviland-movementsystem.Tpo -c -o systems/yviland-movementsystem.o `test -f 'systems/movementsystem.c' || echo '$(srcdir)/'`systems/movementsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) systems/$(DEPDIR)/yviland-movementsystem.Tpo systems/$(DEPDIR)/yviland-movementsystem.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='systems/movementsystem.c' object='systems/yviland-movementsystem.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-movementsystem.o `test -f 'systems/movementsystem.c' || echo '$(srcdir)/'`systems/movementsystem.c
+
+systems/yviland-movementsystem.obj: systems/movementsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-movementsystem.obj -MD -MP -MF systems/$(DEPDIR)/yviland-movementsystem.Tpo -c -o systems/yviland-movementsystem.obj `if test -f 'systems/movementsystem.c'; then $(CYGPATH_W) 'systems/movementsystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/movementsystem.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) systems/$(DEPDIR)/yviland-movementsystem.Tpo systems/$(DEPDIR)/yviland-movementsystem.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='systems/movementsystem.c' object='systems/yviland-movementsystem.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-movementsystem.obj `if test -f 'systems/movementsystem.c'; then $(CYGPATH_W) 'systems/movementsystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/movementsystem.c'; fi`
+
+systems/yviland-animationsystem.o: systems/animationsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-animationsystem.o -MD -MP -MF systems/$(DEPDIR)/yviland-animationsystem.Tpo -c -o systems/yviland-animationsystem.o `test -f 'systems/animationsystem.c' || echo '$(srcdir)/'`systems/animationsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) systems/$(DEPDIR)/yviland-animationsystem.Tpo systems/$(DEPDIR)/yviland-animationsystem.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='systems/animationsystem.c' object='systems/yviland-animationsystem.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-animationsystem.o `test -f 'systems/animationsystem.c' || echo '$(srcdir)/'`systems/animationsystem.c
+
+systems/yviland-animationsystem.obj: systems/animationsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-animationsystem.obj -MD -MP -MF systems/$(DEPDIR)/yviland-animationsystem.Tpo -c -o systems/yviland-animationsystem.obj `if test -f 'systems/animationsystem.c'; then $(CYGPATH_W) 'systems/animationsystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/animationsystem.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) systems/$(DEPDIR)/yviland-animationsystem.Tpo systems/$(DEPDIR)/yviland-animationsystem.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='systems/animationsystem.c' object='systems/yviland-animationsystem.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-animationsystem.obj `if test -f 'systems/animationsystem.c'; then $(CYGPATH_W) 'systems/animationsystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/animationsystem.c'; fi`
+
+systems/yviland-collisionsystem.o: systems/collisionsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-collisionsystem.o -MD -MP -MF systems/$(DEPDIR)/yviland-collisionsystem.Tpo -c -o systems/yviland-collisionsystem.o `test -f 'systems/collisionsystem.c' || echo '$(srcdir)/'`systems/collisionsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) systems/$(DEPDIR)/yviland-collisionsystem.Tpo systems/$(DEPDIR)/yviland-collisionsystem.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='systems/collisionsystem.c' object='systems/yviland-collisionsystem.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-collisionsystem.o `test -f 'systems/collisionsystem.c' || echo '$(srcdir)/'`systems/collisionsystem.c
+
+systems/yviland-collisionsystem.obj: systems/collisionsystem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -MT systems/yviland-collisionsystem.obj -MD -MP -MF systems/$(DEPDIR)/yviland-collisionsystem.Tpo -c -o systems/yviland-collisionsystem.obj `if test -f 'systems/collisionsystem.c'; then $(CYGPATH_W) 'systems/collisionsystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/collisionsystem.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) systems/$(DEPDIR)/yviland-collisionsystem.Tpo systems/$(DEPDIR)/yviland-collisionsystem.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='systems/collisionsystem.c' object='systems/yviland-collisionsystem.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(yviland_CFLAGS) $(CFLAGS) -c -o systems/yviland-collisionsystem.obj `if test -f 'systems/collisionsystem.c'; then $(CYGPATH_W) 'systems/collisionsystem.c'; else $(CYGPATH_W) '$(srcdir)/systems/collisionsystem.c'; fi`
 $(srcdir)/main.c: $(srcdir)/yviland_vala.stamp
-	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
-	@if test -f $@; then :; else \
-	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
-	fi
-$(srcdir)/components/animationcomponent.c: $(srcdir)/yviland_vala.stamp
-	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
-	@if test -f $@; then :; else \
-	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
-	fi
-$(srcdir)/components/collisioncomponent.c: $(srcdir)/yviland_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
@@ -824,6 +870,31 @@ $(srcdir)/game.c: $(srcdir)/yviland_vala.stamp
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
 	fi
 $(srcdir)/gamestate.c: $(srcdir)/yviland_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
+	fi
+$(srcdir)/camera.c: $(srcdir)/yviland_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
+	fi
+$(srcdir)/texturemanager.c: $(srcdir)/yviland_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
+	fi
+$(srcdir)/states/testlevel.c: $(srcdir)/yviland_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
+	fi
+$(srcdir)/components/animationcomponent.c: $(srcdir)/yviland_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
+	fi
+$(srcdir)/components/collisioncomponent.c: $(srcdir)/yviland_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
@@ -843,11 +914,6 @@ $(srcdir)/components/rendercomponent.c: $(srcdir)/yviland_vala.stamp
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
 	fi
-$(srcdir)/texturemanager.c: $(srcdir)/yviland_vala.stamp
-	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
-	@if test -f $@; then :; else \
-	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
-	fi
 $(srcdir)/components/tilemapcomponent.c: $(srcdir)/yviland_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
 	@if test -f $@; then :; else \
@@ -858,17 +924,7 @@ $(srcdir)/components/tilemapcomponent2.c: $(srcdir)/yviland_vala.stamp
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
 	fi
-$(srcdir)/states/testlevel.c: $(srcdir)/yviland_vala.stamp
-	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
-	@if test -f $@; then :; else \
-	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
-	fi
 $(srcdir)/components/cameracomponent.c: $(srcdir)/yviland_vala.stamp
-	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
-	@if test -f $@; then :; else \
-	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
-	fi
-$(srcdir)/components/gravitycomponent.c: $(srcdir)/yviland_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
@@ -883,14 +939,29 @@ $(srcdir)/systems/tilemaprendersystem.c: $(srcdir)/yviland_vala.stamp
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
 	fi
-$(srcdir)/camera.c: $(srcdir)/yviland_vala.stamp
+$(srcdir)/systems/texturesystem.c: $(srcdir)/yviland_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
 	fi
-$(srcdir)/yviland_vala.stamp: main.vala components/animationcomponent.vala components/collisioncomponent.vala game.vala gamestate.vala components/movementcomponent.vala components/positioncomponent.vala components/rendercomponent.vala texturemanager.vala components/tilemapcomponent.vala components/tilemapcomponent2.vala states/testlevel.vala components/cameracomponent.vala components/gravitycomponent.vala systems/rendersystem.vala systems/tilemaprendersystem.vala camera.vala
+$(srcdir)/systems/movementsystem.c: $(srcdir)/yviland_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
+	fi
+$(srcdir)/systems/animationsystem.c: $(srcdir)/yviland_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
+	fi
+$(srcdir)/systems/collisionsystem.c: $(srcdir)/yviland_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/yviland_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/yviland_vala.stamp; \
+	fi
+$(srcdir)/yviland_vala.stamp: main.vala game.vala gamestate.vala camera.vala texturemanager.vala states/testlevel.vala components/animationcomponent.vala components/collisioncomponent.vala components/movementcomponent.vala components/positioncomponent.vala components/rendercomponent.vala components/tilemapcomponent.vala components/tilemapcomponent2.vala components/cameracomponent.vala systems/rendersystem.vala systems/tilemaprendersystem.vala systems/texturesystem.vala systems/movementsystem.vala systems/animationsystem.vala systems/collisionsystem.vala
 	$(AM_V_at)rm -f $@ && echo stamp > $@-t
-	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(yviland_VALAFLAGS) $(VALAFLAGS) -C main.vala components/animationcomponent.vala components/collisioncomponent.vala game.vala gamestate.vala components/movementcomponent.vala components/positioncomponent.vala components/rendercomponent.vala texturemanager.vala components/tilemapcomponent.vala components/tilemapcomponent2.vala states/testlevel.vala components/cameracomponent.vala components/gravitycomponent.vala systems/rendersystem.vala systems/tilemaprendersystem.vala camera.vala
+	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(yviland_VALAFLAGS) $(VALAFLAGS) -C main.vala game.vala gamestate.vala camera.vala texturemanager.vala states/testlevel.vala components/animationcomponent.vala components/collisioncomponent.vala components/movementcomponent.vala components/positioncomponent.vala components/rendercomponent.vala components/tilemapcomponent.vala components/tilemapcomponent2.vala components/cameracomponent.vala systems/rendersystem.vala systems/tilemaprendersystem.vala systems/texturesystem.vala systems/movementsystem.vala systems/animationsystem.vala systems/collisionsystem.vala
 	$(AM_V_at)mv -f $@-t $@
 
 mostlyclean-libtool:
@@ -1028,7 +1099,6 @@ maintainer-clean-generic:
 	-rm -f $(srcdir)/components/animationcomponent.c
 	-rm -f $(srcdir)/components/cameracomponent.c
 	-rm -f $(srcdir)/components/collisioncomponent.c
-	-rm -f $(srcdir)/components/gravitycomponent.c
 	-rm -f $(srcdir)/components/movementcomponent.c
 	-rm -f $(srcdir)/components/positioncomponent.c
 	-rm -f $(srcdir)/components/rendercomponent.c
@@ -1038,7 +1108,11 @@ maintainer-clean-generic:
 	-rm -f $(srcdir)/gamestate.c
 	-rm -f $(srcdir)/main.c
 	-rm -f $(srcdir)/states/testlevel.c
+	-rm -f $(srcdir)/systems/animationsystem.c
+	-rm -f $(srcdir)/systems/collisionsystem.c
+	-rm -f $(srcdir)/systems/movementsystem.c
 	-rm -f $(srcdir)/systems/rendersystem.c
+	-rm -f $(srcdir)/systems/texturesystem.c
 	-rm -f $(srcdir)/systems/tilemaprendersystem.c
 	-rm -f $(srcdir)/texturemanager.c
 	-rm -f $(srcdir)/yviland_vala.stamp
@@ -1046,7 +1120,6 @@ maintainer-clean-generic:
 	-rm -f components/animationcomponent.c
 	-rm -f components/cameracomponent.c
 	-rm -f components/collisioncomponent.c
-	-rm -f components/gravitycomponent.c
 	-rm -f components/movementcomponent.c
 	-rm -f components/positioncomponent.c
 	-rm -f components/rendercomponent.c
@@ -1056,7 +1129,11 @@ maintainer-clean-generic:
 	-rm -f gamestate.c
 	-rm -f main.c
 	-rm -f states/testlevel.c
+	-rm -f systems/animationsystem.c
+	-rm -f systems/collisionsystem.c
+	-rm -f systems/movementsystem.c
 	-rm -f systems/rendersystem.c
+	-rm -f systems/texturesystem.c
 	-rm -f systems/tilemaprendersystem.c
 	-rm -f texturemanager.c
 clean: clean-am

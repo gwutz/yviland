@@ -21,6 +21,14 @@ public class AnimationComponent : Engine.Component {
         this.animations.set (a.get_name (), a);
     }
 
+    public void next_animation() {
+        animations.get(current_animation).play_animation();
+    }
+
+    public int get_animation_number() {
+        return animations.get(current_animation).get_current_sprite();
+    }
+
     public int get_animation_sprite() {
         var ret = animations.get (current_animation).play_animation ();
         // stdout.printf("sprite nr %d\n", ret);
@@ -57,6 +65,10 @@ public class Animation : GLib.Object {
         } else {
             current_frame += 1;
         }
+        return current_sprite;
+    }
+
+    public int get_current_sprite() {
         return current_sprite;
     }
 

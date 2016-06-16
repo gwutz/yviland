@@ -237,7 +237,10 @@ static void tiled_objectgroup_class_init (TiledObjectgroupClass * klass) {
 
 
 static void tiled_objectgroup_instance_init (TiledObjectgroup * self) {
+	GXmlSerializableArrayList* _tmp0_ = NULL;
 	self->priv = TILED_OBJECTGROUP_GET_PRIVATE (self);
+	_tmp0_ = gxml_serializable_array_list_new (TILED_TYPE_OBJECT, (GBoxedCopyFunc) g_object_ref, g_object_unref);
+	self->priv->_objects = _tmp0_;
 }
 
 

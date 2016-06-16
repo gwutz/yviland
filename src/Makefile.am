@@ -2,22 +2,25 @@
 
 bin_PROGRAMS = yviland
 yviland_SOURCES = main.vala \
-		    components/animationcomponent.vala \
-		    components/collisioncomponent.vala \
 		    game.vala \
 		    gamestate.vala \
-		    components/movementcomponent.vala \
-		    components/positioncomponent.vala \
-		    components/rendercomponent.vala \
+				camera.vala \
 		    texturemanager.vala \
-		    components/tilemapcomponent.vala \
-				components/tilemapcomponent2.vala \
 		    states/testlevel.vala \
+				components/animationcomponent.vala \
+				components/collisioncomponent.vala \
+				components/movementcomponent.vala \
+				components/positioncomponent.vala \
+				components/rendercomponent.vala \
+				components/tilemapcomponent.vala \
+				components/tilemapcomponent2.vala \
 				components/cameracomponent.vala \
-				components/gravitycomponent.vala \
 				systems/rendersystem.vala \
 				systems/tilemaprendersystem.vala \
-				camera.vala \
+				systems/texturesystem.vala \
+				systems/movementsystem.vala \
+				systems/animationsystem.vala \
+				systems/collisionsystem.vala \
 		    $(NULL)
 yviland_VALAFLAGS = \
 		--pkg sdl2 \
