@@ -116,7 +116,12 @@ namespace Tiled{
             var ynum = y / tileheight;
             //stdout.printf(@"$xnum $ynum $height $width\n");
             var tilenumber = xnum + ynum * width;
-            return layer[0].data.tiles[tilenumber];
+            if(tilenumber < layer[0].data.tiles.size) {
+                return layer[0].data.tiles[tilenumber];
+            }
+            var t = new Tile();
+            t.gid = 0;
+            return t;
         }
 
         private string getRectAsString(SDL.Video.Rect rect) {

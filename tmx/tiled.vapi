@@ -61,6 +61,7 @@ namespace Tiled {
 		public double height { get; set; }
 		public int id { get; set; }
 		public string name { get; set; }
+		public Tiled.Properties properties { get; set; }
 		public double width { get; set; }
 		public double x { get; set; }
 		public double y { get; set; }
@@ -73,6 +74,21 @@ namespace Tiled {
 		public override string to_string ();
 		public string name { get; set; }
 		public GXml.SerializableArrayList<Tiled.Object> objects { get; set; }
+	}
+	[CCode (cheader_filename = "tiled.h")]
+	public class Properties : GXml.SerializableObjectModel {
+		public Properties ();
+		public override string node_name ();
+		public override string to_string ();
+		public GXml.SerializableArrayList<Tiled.Property> properties { get; set; }
+	}
+	[CCode (cheader_filename = "tiled.h")]
+	public class Property : GXml.SerializableObjectModel {
+		public Property ();
+		public override string node_name ();
+		public override string to_string ();
+		public string name { get; set; }
+		public string value { get; set; }
 	}
 	[CCode (cheader_filename = "tiled.h")]
 	public class Tile : GXml.SerializableObjectModel {

@@ -5,6 +5,7 @@
 #define __ENGINE_H__
 
 #include <glib.h>
+#include <SDL2/SDL_pixels.h>
 #include <glib-object.h>
 #include <gee.h>
 #include <stdlib.h>
@@ -14,6 +15,8 @@
 
 G_BEGIN_DECLS
 
+
+#define ENGINE_TYPE_STATE (engine_state_get_type ())
 
 #define ENGINE_TYPE_ENGINE (engine_engine_get_type ())
 #define ENGINE_ENGINE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_ENGINE, EngineEngine))
@@ -26,15 +29,15 @@ typedef struct _EngineEngine EngineEngine;
 typedef struct _EngineEngineClass EngineEngineClass;
 typedef struct _EngineEnginePrivate EngineEnginePrivate;
 
-#define ENGINE_TYPE_ENTITY_SYSTEM (engine_entity_system_get_type ())
-#define ENGINE_ENTITY_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystem))
-#define ENGINE_ENTITY_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystemClass))
-#define ENGINE_IS_ENTITY_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ENGINE_TYPE_ENTITY_SYSTEM))
-#define ENGINE_IS_ENTITY_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ENGINE_TYPE_ENTITY_SYSTEM))
-#define ENGINE_ENTITY_SYSTEM_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystemClass))
+#define ENGINE_TYPE_SYSTEM (engine_system_get_type ())
+#define ENGINE_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_SYSTEM, EngineSystem))
+#define ENGINE_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ENGINE_TYPE_SYSTEM, EngineSystemClass))
+#define ENGINE_IS_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ENGINE_TYPE_SYSTEM))
+#define ENGINE_IS_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ENGINE_TYPE_SYSTEM))
+#define ENGINE_SYSTEM_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ENGINE_TYPE_SYSTEM, EngineSystemClass))
 
-typedef struct _EngineEntitySystem EngineEntitySystem;
-typedef struct _EngineEntitySystemClass EngineEntitySystemClass;
+typedef struct _EngineSystem EngineSystem;
+typedef struct _EngineSystemClass EngineSystemClass;
 
 #define ENGINE_TYPE_ENTITY (engine_entity_get_type ())
 #define ENGINE_ENTITY(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_ENTITY, EngineEntity))
@@ -67,7 +70,29 @@ typedef struct _EngineComponentClass EngineComponentClass;
 typedef struct _EngineEntityManager EngineEntityManager;
 typedef struct _EngineEntityManagerClass EngineEntityManagerClass;
 typedef struct _EngineEntityManagerPrivate EngineEntityManagerPrivate;
+typedef struct _EngineSystemPrivate EngineSystemPrivate;
+
+#define ENGINE_TYPE_ENTITY_SYSTEM (engine_entity_system_get_type ())
+#define ENGINE_ENTITY_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystem))
+#define ENGINE_ENTITY_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystemClass))
+#define ENGINE_IS_ENTITY_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ENGINE_TYPE_ENTITY_SYSTEM))
+#define ENGINE_IS_ENTITY_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ENGINE_TYPE_ENTITY_SYSTEM))
+#define ENGINE_ENTITY_SYSTEM_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystemClass))
+
+typedef struct _EngineEntitySystem EngineEntitySystem;
+typedef struct _EngineEntitySystemClass EngineEntitySystemClass;
 typedef struct _EngineEntitySystemPrivate EngineEntitySystemPrivate;
+
+#define ENGINE_TYPE_ITERATING_ENTITY_SYSTEM (engine_iterating_entity_system_get_type ())
+#define ENGINE_ITERATING_ENTITY_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_ITERATING_ENTITY_SYSTEM, EngineIteratingEntitySystem))
+#define ENGINE_ITERATING_ENTITY_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ENGINE_TYPE_ITERATING_ENTITY_SYSTEM, EngineIteratingEntitySystemClass))
+#define ENGINE_IS_ITERATING_ENTITY_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ENGINE_TYPE_ITERATING_ENTITY_SYSTEM))
+#define ENGINE_IS_ITERATING_ENTITY_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ENGINE_TYPE_ITERATING_ENTITY_SYSTEM))
+#define ENGINE_ITERATING_ENTITY_SYSTEM_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ENGINE_TYPE_ITERATING_ENTITY_SYSTEM, EngineIteratingEntitySystemClass))
+
+typedef struct _EngineIteratingEntitySystem EngineIteratingEntitySystem;
+typedef struct _EngineIteratingEntitySystemClass EngineIteratingEntitySystemClass;
+typedef struct _EngineIteratingEntitySystemPrivate EngineIteratingEntitySystemPrivate;
 
 #define ENGINE_TYPE_SYSTEM_MANAGER (engine_system_manager_get_type ())
 #define ENGINE_SYSTEM_MANAGER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_SYSTEM_MANAGER, EngineSystemManager))
@@ -92,10 +117,16 @@ typedef struct _EngineUpdateComponent EngineUpdateComponent;
 typedef struct _EngineUpdateComponentClass EngineUpdateComponentClass;
 typedef struct _EngineUpdateComponentPrivate EngineUpdateComponentPrivate;
 
+typedef enum  {
+	ENGINE_STATE_PAUSED,
+	ENGINE_STATE_RUNNING
+} EngineState;
+
 struct _EngineEngine {
 	GTypeInstance parent_instance;
 	volatile int ref_count;
 	EngineEnginePrivate * priv;
+	EngineState state;
 };
 
 struct _EngineEngineClass {
@@ -123,17 +154,39 @@ struct _EngineEntityManagerClass {
 	void (*finalize) (EngineEntityManager *self);
 };
 
-struct _EngineEntitySystem {
+struct _EngineSystem {
 	GObject parent_instance;
-	EngineEntitySystemPrivate * priv;
+	EngineSystemPrivate * priv;
 	EngineEngine* engine;
 };
 
-struct _EngineEntitySystemClass {
+struct _EngineSystemClass {
 	GObjectClass parent_class;
-	void (*addedToEngine) (EngineEntitySystem* self, EngineEngine* engine);
-	void (*removedFromEngine) (EngineEntitySystem* self, EngineEngine* engine);
-	void (*update) (EngineEntitySystem* self, gfloat deltaTime);
+	void (*addedToEngine) (EngineSystem* self, EngineEngine* engine);
+	void (*removedFromEngine) (EngineSystem* self, EngineEngine* engine);
+	void (*update) (EngineSystem* self, gfloat deltaTime);
+};
+
+struct _EngineEntitySystem {
+	EngineSystem parent_instance;
+	EngineEntitySystemPrivate * priv;
+	GeeList* entities;
+};
+
+struct _EngineEntitySystemClass {
+	EngineSystemClass parent_class;
+	GType* (*getEntityTypes) (EngineEntitySystem* self, int* result_length1);
+	void (*updateEntities) (EngineEntitySystem* self);
+};
+
+struct _EngineIteratingEntitySystem {
+	EngineEntitySystem parent_instance;
+	EngineIteratingEntitySystemPrivate * priv;
+};
+
+struct _EngineIteratingEntitySystemClass {
+	EngineEntitySystemClass parent_class;
+	void (*processEntity) (EngineIteratingEntitySystem* self, gfloat deltaTime, EngineEntity* e);
 };
 
 struct _EngineSystemManager {
@@ -167,6 +220,7 @@ struct _EngineUpdateComponentClass {
 };
 
 
+GType engine_state_get_type (void) G_GNUC_CONST;
 gpointer engine_engine_ref (gpointer instance);
 void engine_engine_unref (gpointer instance);
 GParamSpec* engine_param_spec_engine (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
@@ -174,13 +228,14 @@ void engine_value_set_engine (GValue* value, gpointer v_object);
 void engine_value_take_engine (GValue* value, gpointer v_object);
 gpointer engine_value_get_engine (const GValue* value);
 GType engine_engine_get_type (void) G_GNUC_CONST;
-GType engine_entity_system_get_type (void) G_GNUC_CONST;
-void engine_engine_addSystem (EngineEngine* self, EngineEntitySystem* system);
-void engine_engine_removeSystem (EngineEngine* self, EngineEntitySystem* system);
+GType engine_system_get_type (void) G_GNUC_CONST;
+void engine_engine_addSystem (EngineEngine* self, EngineSystem* system);
+void engine_engine_removeSystem (EngineEngine* self, EngineSystem* system);
 void engine_engine_update (EngineEngine* self);
 GType engine_entity_get_type (void) G_GNUC_CONST;
 GeeList* engine_engine_getEntitiesFor (EngineEngine* self, GeeList* componenttypes);
 EngineEntity* engine_engine_createEntity (EngineEngine* self);
+void engine_engine_removeEntity (EngineEngine* self, EngineEntity* e);
 EngineEngine* engine_engine_new (void);
 EngineEngine* engine_engine_construct (GType object_type);
 EngineEntity* engine_entity_new (void);
@@ -207,10 +262,17 @@ GeeList* engine_entity_manager_getEntities (EngineEntityManager* self);
 GeeList* engine_entity_manager_getEntitiesFor (EngineEntityManager* self, GeeList* componenttypes);
 EngineEntityManager* engine_entity_manager_new (void);
 EngineEntityManager* engine_entity_manager_construct (GType object_type);
-void engine_entity_system_addedToEngine (EngineEntitySystem* self, EngineEngine* engine);
-void engine_entity_system_removedFromEngine (EngineEntitySystem* self, EngineEngine* engine);
-void engine_entity_system_update (EngineEntitySystem* self, gfloat deltaTime);
+void engine_system_addedToEngine (EngineSystem* self, EngineEngine* engine);
+void engine_system_removedFromEngine (EngineSystem* self, EngineEngine* engine);
+void engine_system_update (EngineSystem* self, gfloat deltaTime);
+EngineSystem* engine_system_construct (GType object_type);
+GType engine_entity_system_get_type (void) G_GNUC_CONST;
+GType* engine_entity_system_getEntityTypes (EngineEntitySystem* self, int* result_length1);
+void engine_entity_system_updateEntities (EngineEntitySystem* self);
 EngineEntitySystem* engine_entity_system_construct (GType object_type);
+GType engine_iterating_entity_system_get_type (void) G_GNUC_CONST;
+void engine_iterating_entity_system_processEntity (EngineIteratingEntitySystem* self, gfloat deltaTime, EngineEntity* e);
+EngineIteratingEntitySystem* engine_iterating_entity_system_construct (GType object_type);
 gpointer engine_system_manager_ref (gpointer instance);
 void engine_system_manager_unref (gpointer instance);
 GParamSpec* engine_param_spec_system_manager (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
@@ -220,9 +282,9 @@ gpointer engine_value_get_system_manager (const GValue* value);
 GType engine_system_manager_get_type (void) G_GNUC_CONST;
 EngineSystemManager* engine_system_manager_new (void);
 EngineSystemManager* engine_system_manager_construct (GType object_type);
-void engine_system_manager_addSystem (EngineSystemManager* self, EngineEntitySystem* system);
-void engine_system_manager_removeSystem (EngineSystemManager* self, EngineEntitySystem* system);
-EngineEntitySystem* engine_system_manager_getSystem (EngineSystemManager* self, GType t);
+void engine_system_manager_addSystem (EngineSystemManager* self, EngineSystem* system);
+void engine_system_manager_removeSystem (EngineSystemManager* self, EngineSystem* system);
+EngineSystem* engine_system_manager_getSystem (EngineSystemManager* self, GType t);
 GeeList* engine_system_manager_getSystems (EngineSystemManager* self);
 EngineComponent* engine_component_construct (GType object_type);
 EngineEntity* engine_component_get_entity (EngineComponent* self);
@@ -231,6 +293,7 @@ GType engine_update_component_get_type (void) G_GNUC_CONST;
 void engine_update_component_update (EngineUpdateComponent* self);
 EngineUpdateComponent* engine_update_component_construct (GType object_type);
 
+extern const SDL_Color ENGINE_COLOR_BLACK;
 
 G_END_DECLS
 

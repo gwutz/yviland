@@ -1,16 +1,16 @@
 namespace Engine {
     public class SystemManager {
 
-        private Gee.List<EntitySystem> systems = new Gee.ArrayList<EntitySystem>();
-        private Gee.Map<Type, EntitySystem> systemsByType = new Gee.HashMap<Type, EntitySystem>();
+        private Gee.List<System> systems = new Gee.ArrayList<System>();
+        private Gee.Map<Type, System> systemsByType = new Gee.HashMap<Type, System>();
 
         public SystemManager() {
 
         }
 
-        public void addSystem(EntitySystem system) {
+        public void addSystem(System system) {
             Type t = system.get_type();
-            EntitySystem oldSystem = getSystem(t);
+            System oldSystem = getSystem(t);
             if(oldSystem != null) {
                 removeSystem(oldSystem);
             }
@@ -18,16 +18,16 @@ namespace Engine {
             systemsByType.set(t, system);
         }
 
-        public void removeSystem(EntitySystem system) {
+        public void removeSystem(System system) {
             systems.remove(system);
             systemsByType.unset(system.get_type());
         }
 
-        public EntitySystem getSystem(Type t) {
+        public System getSystem(Type t) {
             return systemsByType.get(t);
         }
 
-        public Gee.List<EntitySystem> getSystems() {
+        public Gee.List<System> getSystems() {
             return systems;
         }
     }

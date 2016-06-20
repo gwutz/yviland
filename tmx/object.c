@@ -21,7 +21,30 @@
 typedef struct _TiledObject TiledObject;
 typedef struct _TiledObjectClass TiledObjectClass;
 typedef struct _TiledObjectPrivate TiledObjectPrivate;
+
+#define TILED_TYPE_PROPERTIES (tiled_properties_get_type ())
+#define TILED_PROPERTIES(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TILED_TYPE_PROPERTIES, TiledProperties))
+#define TILED_PROPERTIES_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TILED_TYPE_PROPERTIES, TiledPropertiesClass))
+#define TILED_IS_PROPERTIES(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TILED_TYPE_PROPERTIES))
+#define TILED_IS_PROPERTIES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TILED_TYPE_PROPERTIES))
+#define TILED_PROPERTIES_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TILED_TYPE_PROPERTIES, TiledPropertiesClass))
+
+typedef struct _TiledProperties TiledProperties;
+typedef struct _TiledPropertiesClass TiledPropertiesClass;
 #define _g_free0(var) (var = (g_free (var), NULL))
+#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
+typedef struct _TiledPropertiesPrivate TiledPropertiesPrivate;
+
+#define TILED_TYPE_PROPERTY (tiled_property_get_type ())
+#define TILED_PROPERTY(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TILED_TYPE_PROPERTY, TiledProperty))
+#define TILED_PROPERTY_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TILED_TYPE_PROPERTY, TiledPropertyClass))
+#define TILED_IS_PROPERTY(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TILED_TYPE_PROPERTY))
+#define TILED_IS_PROPERTY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TILED_TYPE_PROPERTY))
+#define TILED_PROPERTY_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TILED_TYPE_PROPERTY, TiledPropertyClass))
+
+typedef struct _TiledProperty TiledProperty;
+typedef struct _TiledPropertyClass TiledPropertyClass;
+typedef struct _TiledPropertyPrivate TiledPropertyPrivate;
 
 struct _TiledObject {
 	GXmlSerializableObjectModel parent_instance;
@@ -39,12 +62,43 @@ struct _TiledObjectPrivate {
 	gdouble _y;
 	gdouble _width;
 	gdouble _height;
+	TiledProperties* _properties;
+};
+
+struct _TiledProperties {
+	GXmlSerializableObjectModel parent_instance;
+	TiledPropertiesPrivate * priv;
+};
+
+struct _TiledPropertiesClass {
+	GXmlSerializableObjectModelClass parent_class;
+};
+
+struct _TiledPropertiesPrivate {
+	GXmlSerializableArrayList* _properties;
+};
+
+struct _TiledProperty {
+	GXmlSerializableObjectModel parent_instance;
+	TiledPropertyPrivate * priv;
+};
+
+struct _TiledPropertyClass {
+	GXmlSerializableObjectModelClass parent_class;
+};
+
+struct _TiledPropertyPrivate {
+	gchar* _name;
+	gchar* _value;
 };
 
 
 static gpointer tiled_object_parent_class = NULL;
+static gpointer tiled_properties_parent_class = NULL;
+static gpointer tiled_property_parent_class = NULL;
 
 GType tiled_object_get_type (void) G_GNUC_CONST;
+GType tiled_properties_get_type (void) G_GNUC_CONST;
 #define TILED_OBJECT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TILED_TYPE_OBJECT, TiledObjectPrivate))
 enum  {
 	TILED_OBJECT_DUMMY_PROPERTY,
@@ -53,8 +107,11 @@ enum  {
 	TILED_OBJECT_X,
 	TILED_OBJECT_Y,
 	TILED_OBJECT_WIDTH,
-	TILED_OBJECT_HEIGHT
+	TILED_OBJECT_HEIGHT,
+	TILED_OBJECT_PROPERTIES
 };
+TiledProperties* tiled_properties_new (void);
+TiledProperties* tiled_properties_construct (GType object_type);
 static gchar* tiled_object_real_node_name (GXmlSerializableObjectModel* base);
 static gchar* tiled_object_real_to_string (GXmlSerializableObjectModel* base);
 gint tiled_object_get_id (TiledObject* self);
@@ -71,9 +128,41 @@ void tiled_object_set_x (TiledObject* self, gdouble value);
 void tiled_object_set_y (TiledObject* self, gdouble value);
 void tiled_object_set_width (TiledObject* self, gdouble value);
 void tiled_object_set_height (TiledObject* self, gdouble value);
+TiledProperties* tiled_object_get_properties (TiledObject* self);
+void tiled_object_set_properties (TiledObject* self, TiledProperties* value);
 static void tiled_object_finalize (GObject* obj);
 static void _vala_tiled_object_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
 static void _vala_tiled_object_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
+GType tiled_property_get_type (void) G_GNUC_CONST;
+#define TILED_PROPERTIES_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TILED_TYPE_PROPERTIES, TiledPropertiesPrivate))
+enum  {
+	TILED_PROPERTIES_DUMMY_PROPERTY,
+	TILED_PROPERTIES_PROPERTIES
+};
+static gchar* tiled_properties_real_node_name (GXmlSerializableObjectModel* base);
+static gchar* tiled_properties_real_to_string (GXmlSerializableObjectModel* base);
+GXmlSerializableArrayList* tiled_properties_get_properties (TiledProperties* self);
+void tiled_properties_set_properties (TiledProperties* self, GXmlSerializableArrayList* value);
+static void tiled_properties_finalize (GObject* obj);
+static void _vala_tiled_properties_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
+static void _vala_tiled_properties_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
+#define TILED_PROPERTY_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TILED_TYPE_PROPERTY, TiledPropertyPrivate))
+enum  {
+	TILED_PROPERTY_DUMMY_PROPERTY,
+	TILED_PROPERTY_NAME,
+	TILED_PROPERTY_VALUE
+};
+static gchar* tiled_property_real_node_name (GXmlSerializableObjectModel* base);
+static gchar* tiled_property_real_to_string (GXmlSerializableObjectModel* base);
+const gchar* tiled_property_get_name (TiledProperty* self);
+const gchar* tiled_property_get_value (TiledProperty* self);
+TiledProperty* tiled_property_new (void);
+TiledProperty* tiled_property_construct (GType object_type);
+void tiled_property_set_name (TiledProperty* self, const gchar* value);
+void tiled_property_set_value (TiledProperty* self, const gchar* value);
+static void tiled_property_finalize (GObject* obj);
+static void _vala_tiled_property_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
+static void _vala_tiled_property_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
 
 
 static gchar* tiled_object_real_node_name (GXmlSerializableObjectModel* base) {
@@ -296,6 +385,33 @@ void tiled_object_set_height (TiledObject* self, gdouble value) {
 }
 
 
+TiledProperties* tiled_object_get_properties (TiledObject* self) {
+	TiledProperties* result;
+	TiledProperties* _tmp0_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
+	_tmp0_ = self->priv->_properties;
+	result = _tmp0_;
+	return result;
+}
+
+
+static gpointer _g_object_ref0 (gpointer self) {
+	return self ? g_object_ref (self) : NULL;
+}
+
+
+void tiled_object_set_properties (TiledObject* self, TiledProperties* value) {
+	TiledProperties* _tmp0_ = NULL;
+	TiledProperties* _tmp1_ = NULL;
+	g_return_if_fail (self != NULL);
+	_tmp0_ = value;
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+	_g_object_unref0 (self->priv->_properties);
+	self->priv->_properties = _tmp1_;
+	g_object_notify ((GObject *) self, "properties");
+}
+
+
 static void tiled_object_class_init (TiledObjectClass * klass) {
 	tiled_object_parent_class = g_type_class_peek_parent (klass);
 	g_type_class_add_private (klass, sizeof (TiledObjectPrivate));
@@ -310,11 +426,15 @@ static void tiled_object_class_init (TiledObjectClass * klass) {
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TILED_OBJECT_Y, g_param_spec_double ("y", "y", "y", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TILED_OBJECT_WIDTH, g_param_spec_double ("width", "width", "width", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TILED_OBJECT_HEIGHT, g_param_spec_double ("height", "height", "height", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
+	g_object_class_install_property (G_OBJECT_CLASS (klass), TILED_OBJECT_PROPERTIES, g_param_spec_object ("properties", "properties", "properties", TILED_TYPE_PROPERTIES, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
 }
 
 
 static void tiled_object_instance_init (TiledObject * self) {
+	TiledProperties* _tmp0_ = NULL;
 	self->priv = TILED_OBJECT_GET_PRIVATE (self);
+	_tmp0_ = tiled_properties_new ();
+	self->priv->_properties = _tmp0_;
 }
 
 
@@ -322,6 +442,7 @@ static void tiled_object_finalize (GObject* obj) {
 	TiledObject * self;
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TILED_TYPE_OBJECT, TiledObject);
 	_g_free0 (self->priv->_name);
+	_g_object_unref0 (self->priv->_properties);
 	G_OBJECT_CLASS (tiled_object_parent_class)->finalize (obj);
 }
 
@@ -360,6 +481,9 @@ static void _vala_tiled_object_get_property (GObject * object, guint property_id
 		case TILED_OBJECT_HEIGHT:
 		g_value_set_double (value, tiled_object_get_height (self));
 		break;
+		case TILED_OBJECT_PROPERTIES:
+		g_value_set_object (value, tiled_object_get_properties (self));
+		break;
 		default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 		break;
@@ -388,6 +512,292 @@ static void _vala_tiled_object_set_property (GObject * object, guint property_id
 		break;
 		case TILED_OBJECT_HEIGHT:
 		tiled_object_set_height (self, g_value_get_double (value));
+		break;
+		case TILED_OBJECT_PROPERTIES:
+		tiled_object_set_properties (self, g_value_get_object (value));
+		break;
+		default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
+}
+
+
+static gchar* tiled_properties_real_node_name (GXmlSerializableObjectModel* base) {
+	TiledProperties * self;
+	gchar* result = NULL;
+	gchar* _tmp0_ = NULL;
+	self = (TiledProperties*) base;
+	_tmp0_ = g_strdup ("Properties");
+	result = _tmp0_;
+	return result;
+}
+
+
+static gchar* tiled_properties_real_to_string (GXmlSerializableObjectModel* base) {
+	TiledProperties * self;
+	gchar* result = NULL;
+	gchar* _tmp0_ = NULL;
+	self = (TiledProperties*) base;
+	_tmp0_ = g_strdup ("Properties: ");
+	result = _tmp0_;
+	return result;
+}
+
+
+TiledProperties* tiled_properties_construct (GType object_type) {
+	TiledProperties * self = NULL;
+	self = (TiledProperties*) gxml_serializable_object_model_construct (object_type);
+	return self;
+}
+
+
+TiledProperties* tiled_properties_new (void) {
+	return tiled_properties_construct (TILED_TYPE_PROPERTIES);
+}
+
+
+GXmlSerializableArrayList* tiled_properties_get_properties (TiledProperties* self) {
+	GXmlSerializableArrayList* result;
+	GXmlSerializableArrayList* _tmp0_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
+	_tmp0_ = self->priv->_properties;
+	result = _tmp0_;
+	return result;
+}
+
+
+void tiled_properties_set_properties (TiledProperties* self, GXmlSerializableArrayList* value) {
+	GXmlSerializableArrayList* _tmp0_ = NULL;
+	GXmlSerializableArrayList* _tmp1_ = NULL;
+	g_return_if_fail (self != NULL);
+	_tmp0_ = value;
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+	_g_object_unref0 (self->priv->_properties);
+	self->priv->_properties = _tmp1_;
+	g_object_notify ((GObject *) self, "properties");
+}
+
+
+static void tiled_properties_class_init (TiledPropertiesClass * klass) {
+	tiled_properties_parent_class = g_type_class_peek_parent (klass);
+	g_type_class_add_private (klass, sizeof (TiledPropertiesPrivate));
+	((GXmlSerializableObjectModelClass *) klass)->node_name = tiled_properties_real_node_name;
+	((GXmlSerializableObjectModelClass *) klass)->to_string = tiled_properties_real_to_string;
+	G_OBJECT_CLASS (klass)->get_property = _vala_tiled_properties_get_property;
+	G_OBJECT_CLASS (klass)->set_property = _vala_tiled_properties_set_property;
+	G_OBJECT_CLASS (klass)->finalize = tiled_properties_finalize;
+	g_object_class_install_property (G_OBJECT_CLASS (klass), TILED_PROPERTIES_PROPERTIES, g_param_spec_object ("properties", "properties", "properties", GXML_TYPE_SERIALIZABLE_ARRAY_LIST, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
+}
+
+
+static void tiled_properties_instance_init (TiledProperties * self) {
+	GXmlSerializableArrayList* _tmp0_ = NULL;
+	self->priv = TILED_PROPERTIES_GET_PRIVATE (self);
+	_tmp0_ = gxml_serializable_array_list_new (TILED_TYPE_PROPERTY, (GBoxedCopyFunc) g_object_ref, g_object_unref);
+	self->priv->_properties = _tmp0_;
+}
+
+
+static void tiled_properties_finalize (GObject* obj) {
+	TiledProperties * self;
+	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TILED_TYPE_PROPERTIES, TiledProperties);
+	_g_object_unref0 (self->priv->_properties);
+	G_OBJECT_CLASS (tiled_properties_parent_class)->finalize (obj);
+}
+
+
+GType tiled_properties_get_type (void) {
+	static volatile gsize tiled_properties_type_id__volatile = 0;
+	if (g_once_init_enter (&tiled_properties_type_id__volatile)) {
+		static const GTypeInfo g_define_type_info = { sizeof (TiledPropertiesClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) tiled_properties_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TiledProperties), 0, (GInstanceInitFunc) tiled_properties_instance_init, NULL };
+		GType tiled_properties_type_id;
+		tiled_properties_type_id = g_type_register_static (GXML_TYPE_SERIALIZABLE_OBJECT_MODEL, "TiledProperties", &g_define_type_info, 0);
+		g_once_init_leave (&tiled_properties_type_id__volatile, tiled_properties_type_id);
+	}
+	return tiled_properties_type_id__volatile;
+}
+
+
+static void _vala_tiled_properties_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
+	TiledProperties * self;
+	self = G_TYPE_CHECK_INSTANCE_CAST (object, TILED_TYPE_PROPERTIES, TiledProperties);
+	switch (property_id) {
+		case TILED_PROPERTIES_PROPERTIES:
+		g_value_set_object (value, tiled_properties_get_properties (self));
+		break;
+		default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
+}
+
+
+static void _vala_tiled_properties_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
+	TiledProperties * self;
+	self = G_TYPE_CHECK_INSTANCE_CAST (object, TILED_TYPE_PROPERTIES, TiledProperties);
+	switch (property_id) {
+		case TILED_PROPERTIES_PROPERTIES:
+		tiled_properties_set_properties (self, g_value_get_object (value));
+		break;
+		default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
+}
+
+
+static gchar* tiled_property_real_node_name (GXmlSerializableObjectModel* base) {
+	TiledProperty * self;
+	gchar* result = NULL;
+	gchar* _tmp0_ = NULL;
+	self = (TiledProperty*) base;
+	_tmp0_ = g_strdup ("property");
+	result = _tmp0_;
+	return result;
+}
+
+
+static gchar* tiled_property_real_to_string (GXmlSerializableObjectModel* base) {
+	TiledProperty * self;
+	gchar* result = NULL;
+	const gchar* _tmp0_ = NULL;
+	const gchar* _tmp1_ = NULL;
+	const gchar* _tmp2_ = NULL;
+	const gchar* _tmp3_ = NULL;
+	gchar* _tmp4_ = NULL;
+	self = (TiledProperty*) base;
+	_tmp0_ = self->priv->_name;
+	_tmp1_ = string_to_string (_tmp0_);
+	_tmp2_ = self->priv->_value;
+	_tmp3_ = string_to_string (_tmp2_);
+	_tmp4_ = g_strconcat ("Property: ", _tmp1_, " ", _tmp3_, NULL);
+	result = _tmp4_;
+	return result;
+}
+
+
+TiledProperty* tiled_property_construct (GType object_type) {
+	TiledProperty * self = NULL;
+	self = (TiledProperty*) gxml_serializable_object_model_construct (object_type);
+	return self;
+}
+
+
+TiledProperty* tiled_property_new (void) {
+	return tiled_property_construct (TILED_TYPE_PROPERTY);
+}
+
+
+const gchar* tiled_property_get_name (TiledProperty* self) {
+	const gchar* result;
+	const gchar* _tmp0_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
+	_tmp0_ = self->priv->_name;
+	result = _tmp0_;
+	return result;
+}
+
+
+void tiled_property_set_name (TiledProperty* self, const gchar* value) {
+	const gchar* _tmp0_ = NULL;
+	gchar* _tmp1_ = NULL;
+	g_return_if_fail (self != NULL);
+	_tmp0_ = value;
+	_tmp1_ = g_strdup (_tmp0_);
+	_g_free0 (self->priv->_name);
+	self->priv->_name = _tmp1_;
+	g_object_notify ((GObject *) self, "name");
+}
+
+
+const gchar* tiled_property_get_value (TiledProperty* self) {
+	const gchar* result;
+	const gchar* _tmp0_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
+	_tmp0_ = self->priv->_value;
+	result = _tmp0_;
+	return result;
+}
+
+
+void tiled_property_set_value (TiledProperty* self, const gchar* value) {
+	const gchar* _tmp0_ = NULL;
+	gchar* _tmp1_ = NULL;
+	g_return_if_fail (self != NULL);
+	_tmp0_ = value;
+	_tmp1_ = g_strdup (_tmp0_);
+	_g_free0 (self->priv->_value);
+	self->priv->_value = _tmp1_;
+	g_object_notify ((GObject *) self, "value");
+}
+
+
+static void tiled_property_class_init (TiledPropertyClass * klass) {
+	tiled_property_parent_class = g_type_class_peek_parent (klass);
+	g_type_class_add_private (klass, sizeof (TiledPropertyPrivate));
+	((GXmlSerializableObjectModelClass *) klass)->node_name = tiled_property_real_node_name;
+	((GXmlSerializableObjectModelClass *) klass)->to_string = tiled_property_real_to_string;
+	G_OBJECT_CLASS (klass)->get_property = _vala_tiled_property_get_property;
+	G_OBJECT_CLASS (klass)->set_property = _vala_tiled_property_set_property;
+	G_OBJECT_CLASS (klass)->finalize = tiled_property_finalize;
+	g_object_class_install_property (G_OBJECT_CLASS (klass), TILED_PROPERTY_NAME, g_param_spec_string ("name", "name", "name", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
+	g_object_class_install_property (G_OBJECT_CLASS (klass), TILED_PROPERTY_VALUE, g_param_spec_string ("value", "value", "value", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
+}
+
+
+static void tiled_property_instance_init (TiledProperty * self) {
+	self->priv = TILED_PROPERTY_GET_PRIVATE (self);
+}
+
+
+static void tiled_property_finalize (GObject* obj) {
+	TiledProperty * self;
+	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TILED_TYPE_PROPERTY, TiledProperty);
+	_g_free0 (self->priv->_name);
+	_g_free0 (self->priv->_value);
+	G_OBJECT_CLASS (tiled_property_parent_class)->finalize (obj);
+}
+
+
+GType tiled_property_get_type (void) {
+	static volatile gsize tiled_property_type_id__volatile = 0;
+	if (g_once_init_enter (&tiled_property_type_id__volatile)) {
+		static const GTypeInfo g_define_type_info = { sizeof (TiledPropertyClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) tiled_property_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TiledProperty), 0, (GInstanceInitFunc) tiled_property_instance_init, NULL };
+		GType tiled_property_type_id;
+		tiled_property_type_id = g_type_register_static (GXML_TYPE_SERIALIZABLE_OBJECT_MODEL, "TiledProperty", &g_define_type_info, 0);
+		g_once_init_leave (&tiled_property_type_id__volatile, tiled_property_type_id);
+	}
+	return tiled_property_type_id__volatile;
+}
+
+
+static void _vala_tiled_property_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
+	TiledProperty * self;
+	self = G_TYPE_CHECK_INSTANCE_CAST (object, TILED_TYPE_PROPERTY, TiledProperty);
+	switch (property_id) {
+		case TILED_PROPERTY_NAME:
+		g_value_set_string (value, tiled_property_get_name (self));
+		break;
+		case TILED_PROPERTY_VALUE:
+		g_value_set_string (value, tiled_property_get_value (self));
+		break;
+		default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
+}
+
+
+static void _vala_tiled_property_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
+	TiledProperty * self;
+	self = G_TYPE_CHECK_INSTANCE_CAST (object, TILED_TYPE_PROPERTY, TiledProperty);
+	switch (property_id) {
+		case TILED_PROPERTY_NAME:
+		tiled_property_set_name (self, g_value_get_string (value));
+		break;
+		case TILED_PROPERTY_VALUE:
+		tiled_property_set_value (self, g_value_get_string (value));
 		break;
 		default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);

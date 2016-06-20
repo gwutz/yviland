@@ -1,9 +1,11 @@
+// modules: sdl2 engine gee-0.8
+// vapidirs: ../../engine
 using SDL.Video;
 
 public class Testlevel : GameState {
 
-    public Testlevel (TextureManager textureManager, Renderer renderer) {
-        base ("data/testmap.tmx", textureManager, renderer);
+    public Testlevel (TextureManager textureManager, FontManager fontManager, Renderer renderer) {
+        base ("data/testmap.tmx", textureManager, fontManager, renderer);
     }
 
     public override void add_entities() {
@@ -14,8 +16,8 @@ public class Testlevel : GameState {
         e.add_component(new RenderComponent("player", "data/yvonne.png", 30, 17));
         e.add_component(new MovementComponent());
         var ani = new AnimationComponent();
-        ani.add_animation (new Animation("still", 0, 3, 6));
-        ani.add_animation (new Animation("running", 4, 6, 6));
+        ani.add_animation (new Animation("still", 0, 3, 3, true));
+        ani.add_animation (new Animation("running", 4, 6, 3, true));
         e.add_component(ani);
         e.add_component(new CollisionComponent(11, 5, 8, 12));
     }
@@ -24,11 +26,22 @@ public class Testlevel : GameState {
         var map = mapentity.get_component<TilemapComponent2>();
         foreach (Tiled.Objectgroup objgrp in map.map.objectgroup) {
             if(objgrp.name == "qboxes") {
-                stdout.printf("size %d\n", objgrp.objects.size);
                 foreach (Tiled.Object o in objgrp.objects) {
                     var e = this.engine.createEntity();
                     e.add_component(new PositionComponent((int)o.x, (int)o.y));
-                    e.add_component(new RenderComponent("qbox", "data/qbox.png", 12, 12));
+                    e.add_component(new RenderComponent("qbox",
+                                "data/qbox-sheet.png", 12, 14));
+                    e.add_component(new CollisionComponent(0,2,12,12));
+                    foreach(Tiled.Property p in o.properties.properties) {
+                        if(p.name == "text") {
+                            e.add_component(new TextComponent("defaultfont",
+                                        p.value, Engine.Color.BLACK));
+                        }
+                    }
+                    var ani = new AnimationComponent();
+                    ani.add_animation(new Animation("still", 0, 0, 1));
+                    ani.add_animation(new Animation("touched", 0, 4, 1));
+                    e.add_component(ani);
                 }
             }
         }

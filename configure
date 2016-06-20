@@ -17023,6 +17023,7 @@ if test -n "$YVILAND_CFLAGS"; then
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 \""; } >&5
@@ -17032,6 +17033,7 @@ if test -n "$YVILAND_CFLAGS"; then
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 ") 2>&5
@@ -17044,6 +17046,7 @@ if test -n "$YVILAND_CFLAGS"; then
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 " 2>/dev/null`
@@ -17064,6 +17067,7 @@ if test -n "$YVILAND_LIBS"; then
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 \""; } >&5
@@ -17073,6 +17077,7 @@ if test -n "$YVILAND_LIBS"; then
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 ") 2>&5
@@ -17085,6 +17090,7 @@ if test -n "$YVILAND_LIBS"; then
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 " 2>/dev/null`
@@ -17114,6 +17120,7 @@ fi
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 " 2>&1`
@@ -17124,6 +17131,7 @@ fi
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 " 2>&1`
@@ -17137,6 +17145,7 @@ fi
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 ) were not met:

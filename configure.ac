@@ -26,6 +26,7 @@ PKG_CHECK_MODULES(YVILAND, [
 			gobject-2.0
 			sdl2
 			SDL2_image
+            SDL2_ttf
 			gee-0.8
 			gxml-0.10
 ])

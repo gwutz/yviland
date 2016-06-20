@@ -101,6 +101,28 @@ typedef struct _TiledObjectgroupClass TiledObjectgroupClass;
 typedef struct _TiledObject TiledObject;
 typedef struct _TiledObjectClass TiledObjectClass;
 typedef struct _TiledObjectPrivate TiledObjectPrivate;
+
+#define TILED_TYPE_PROPERTIES (tiled_properties_get_type ())
+#define TILED_PROPERTIES(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TILED_TYPE_PROPERTIES, TiledProperties))
+#define TILED_PROPERTIES_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TILED_TYPE_PROPERTIES, TiledPropertiesClass))
+#define TILED_IS_PROPERTIES(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TILED_TYPE_PROPERTIES))
+#define TILED_IS_PROPERTIES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TILED_TYPE_PROPERTIES))
+#define TILED_PROPERTIES_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TILED_TYPE_PROPERTIES, TiledPropertiesClass))
+
+typedef struct _TiledProperties TiledProperties;
+typedef struct _TiledPropertiesClass TiledPropertiesClass;
+typedef struct _TiledPropertiesPrivate TiledPropertiesPrivate;
+
+#define TILED_TYPE_PROPERTY (tiled_property_get_type ())
+#define TILED_PROPERTY(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TILED_TYPE_PROPERTY, TiledProperty))
+#define TILED_PROPERTY_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TILED_TYPE_PROPERTY, TiledPropertyClass))
+#define TILED_IS_PROPERTY(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TILED_TYPE_PROPERTY))
+#define TILED_IS_PROPERTY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TILED_TYPE_PROPERTY))
+#define TILED_PROPERTY_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TILED_TYPE_PROPERTY, TiledPropertyClass))
+
+typedef struct _TiledProperty TiledProperty;
+typedef struct _TiledPropertyClass TiledPropertyClass;
+typedef struct _TiledPropertyPrivate TiledPropertyPrivate;
 typedef struct _TiledObjectgroupPrivate TiledObjectgroupPrivate;
 typedef struct _TiledTilePrivate TiledTilePrivate;
 typedef struct _TiledTilesetPrivate TiledTilesetPrivate;
@@ -154,6 +176,24 @@ struct _TiledObject {
 };
 
 struct _TiledObjectClass {
+	GXmlSerializableObjectModelClass parent_class;
+};
+
+struct _TiledProperties {
+	GXmlSerializableObjectModel parent_instance;
+	TiledPropertiesPrivate * priv;
+};
+
+struct _TiledPropertiesClass {
+	GXmlSerializableObjectModelClass parent_class;
+};
+
+struct _TiledProperty {
+	GXmlSerializableObjectModel parent_instance;
+	TiledPropertyPrivate * priv;
+};
+
+struct _TiledPropertyClass {
 	GXmlSerializableObjectModelClass parent_class;
 };
 
@@ -255,6 +295,20 @@ gdouble tiled_object_get_width (TiledObject* self);
 void tiled_object_set_width (TiledObject* self, gdouble value);
 gdouble tiled_object_get_height (TiledObject* self);
 void tiled_object_set_height (TiledObject* self, gdouble value);
+GType tiled_properties_get_type (void) G_GNUC_CONST;
+TiledProperties* tiled_object_get_properties (TiledObject* self);
+void tiled_object_set_properties (TiledObject* self, TiledProperties* value);
+TiledProperties* tiled_properties_new (void);
+TiledProperties* tiled_properties_construct (GType object_type);
+GType tiled_property_get_type (void) G_GNUC_CONST;
+GXmlSerializableArrayList* tiled_properties_get_properties (TiledProperties* self);
+void tiled_properties_set_properties (TiledProperties* self, GXmlSerializableArrayList* value);
+TiledProperty* tiled_property_new (void);
+TiledProperty* tiled_property_construct (GType object_type);
+const gchar* tiled_property_get_name (TiledProperty* self);
+void tiled_property_set_name (TiledProperty* self, const gchar* value);
+const gchar* tiled_property_get_value (TiledProperty* self);
+void tiled_property_set_value (TiledProperty* self, const gchar* value);
 void tiled_objectgroup_show (TiledObjectgroup* self);
 TiledObjectgroup* tiled_objectgroup_new (void);
 TiledObjectgroup* tiled_objectgroup_construct (GType object_type);

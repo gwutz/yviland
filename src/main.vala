@@ -1,12 +1,13 @@
 using Tiled;
 
-const int FRAMES_PER_SECOND = 50;
+const int FRAMES_PER_SECOND = 30;
 const int FRAMEDURATION = 1000 / FRAMES_PER_SECOND;
 
 public static void main(string[] argv) {
 
     SDL.init (SDL.InitFlag.EVERYTHING);
-    var game = new Game (640, 480);
+    SDLTTF.init();
+    var game = new Game (640, 512);
 
     while( game.is_running ()){
         var start = SDL.Timer.get_ticks ();

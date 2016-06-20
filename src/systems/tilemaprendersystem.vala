@@ -2,10 +2,8 @@ using SDL.Video;
 using Tiled;
 
 public class TilemapRenderSystem : Engine.EntitySystem {
-
     private weak Renderer renderer;
     private weak TextureManager textureManager;
-    private Gee.List<Engine.Entity> entities;
     private weak Camera camera;
     private bool loaded = false;
 
@@ -24,10 +22,13 @@ public class TilemapRenderSystem : Engine.EntitySystem {
         }
     }
 
+    public override Type[] getEntityTypes() {
+        return {
+            typeof(TilemapComponent2)
+        };
+    }
+
     public override void update(float deltaTime) {
-        this.entities = this.engine.getEntitiesFor(new Gee.ArrayList<Type>.wrap(
-                    { typeof(TilemapComponent2) }
-        ));
         if(!loaded) {
             loadTexture();
             loaded = true;
@@ -43,7 +44,10 @@ public class TilemapRenderSystem : Engine.EntitySystem {
             for( int j = 0;j < c.map.width;j++ ){
                 var tilenumber = j + i * c.map.width;
                 var dst = Rect () {
-                    x = j * c.map.tilewidth - camera.x, y = i * c.map.tileheight, w = c.map.tilewidth, h = c.map.tileheight
+                    x = j * c.map.tilewidth - camera.x, 
+                    y = i * c.map.tileheight,
+                    w = c.map.tilewidth,
+                    h = c.map.tileheight
                 };
                 int row = c.map.layer[0].data.tiles[tilenumber].gid / c.map.tileset[0].columns;
                 int column = c.map.layer[0].data.tiles[tilenumber].gid % c.map.tileset[0].columns - 1;

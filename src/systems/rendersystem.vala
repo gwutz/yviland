@@ -1,10 +1,10 @@
+// modules: sdl2 engine gee-0.8
+// vapidirs: ../../engine
 using SDL.Video;
 
 public class RenderSystem : Engine.EntitySystem {
-
     private weak Renderer renderer;
     private weak TextureManager textureManager;
-    private Gee.List<Engine.Entity> entities;
     private weak Camera camera;
 
     public RenderSystem(Camera camera, Renderer renderer, TextureManager textureManager) {
@@ -13,13 +13,15 @@ public class RenderSystem : Engine.EntitySystem {
         this.textureManager = textureManager;
     }
 
-    public override void update(float deltaTime) {
-        this.entities = this.engine.getEntitiesFor(new Gee.ArrayList<Type>.wrap(
-                    { typeof(RenderComponent), typeof(PositionComponent) }
-        ));
+    public override Type[] getEntityTypes() {
+        return {
+            typeof(RenderComponent),
+            typeof(PositionComponent)
+        };
+    }
 
+    public override void update(float deltaTime) {
         foreach (Engine.Entity e in entities) {
-            // draw entities
             render(e);
         }
     }
@@ -29,19 +31,20 @@ public class RenderSystem : Engine.EntitySystem {
         var pos = e.get_component<PositionComponent>();
         var ani = e.get_component<AnimationComponent>();
         var collision = e.get_component<CollisionComponent>();
-        pos.update_position();
+        if(engine.state != Engine.State.PAUSED)
+            pos.update_position();
         var r = Rect() {
-            x = pos.x, y = pos.y, w = c.w, h = c.h
+            x = pos.x - camera.x, y = pos.y, w = c.w, h = c.h
         };
 
-        if(collision != null) {
+        /*if(collision != null) {
             renderer.set_draw_color (96, 190, 255, 118);
             var box = SDL.Video.Rect () {
                 x = pos.x + collision.box.x, y = pos.y + collision.box.y,
                 w = collision.box.w, h = collision.box.h
             };
             renderer.fill_rect (box);
-        }
+        }*/
 
         if(ani != null) {
             textureManager.draw_frame(c.identifier, r, 0, ani.get_animation_number(), pos.flip, renderer);

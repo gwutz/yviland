@@ -19,15 +19,15 @@ typedef struct _EngineSystemManager EngineSystemManager;
 typedef struct _EngineSystemManagerClass EngineSystemManagerClass;
 typedef struct _EngineSystemManagerPrivate EngineSystemManagerPrivate;
 
-#define ENGINE_TYPE_ENTITY_SYSTEM (engine_entity_system_get_type ())
-#define ENGINE_ENTITY_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystem))
-#define ENGINE_ENTITY_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystemClass))
-#define ENGINE_IS_ENTITY_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ENGINE_TYPE_ENTITY_SYSTEM))
-#define ENGINE_IS_ENTITY_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ENGINE_TYPE_ENTITY_SYSTEM))
-#define ENGINE_ENTITY_SYSTEM_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ENGINE_TYPE_ENTITY_SYSTEM, EngineEntitySystemClass))
+#define ENGINE_TYPE_SYSTEM (engine_system_get_type ())
+#define ENGINE_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), ENGINE_TYPE_SYSTEM, EngineSystem))
+#define ENGINE_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), ENGINE_TYPE_SYSTEM, EngineSystemClass))
+#define ENGINE_IS_SYSTEM(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ENGINE_TYPE_SYSTEM))
+#define ENGINE_IS_SYSTEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), ENGINE_TYPE_SYSTEM))
+#define ENGINE_SYSTEM_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), ENGINE_TYPE_SYSTEM, EngineSystemClass))
 
-typedef struct _EngineEntitySystem EngineEntitySystem;
-typedef struct _EngineEntitySystemClass EngineEntitySystemClass;
+typedef struct _EngineSystem EngineSystem;
+typedef struct _EngineSystemClass EngineSystemClass;
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 typedef struct _EngineParamSpecSystemManager EngineParamSpecSystemManager;
 
@@ -61,16 +61,16 @@ void engine_value_set_system_manager (GValue* value, gpointer v_object);
 void engine_value_take_system_manager (GValue* value, gpointer v_object);
 gpointer engine_value_get_system_manager (const GValue* value);
 GType engine_system_manager_get_type (void) G_GNUC_CONST;
-GType engine_entity_system_get_type (void) G_GNUC_CONST;
+GType engine_system_get_type (void) G_GNUC_CONST;
 #define ENGINE_SYSTEM_MANAGER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), ENGINE_TYPE_SYSTEM_MANAGER, EngineSystemManagerPrivate))
 enum  {
 	ENGINE_SYSTEM_MANAGER_DUMMY_PROPERTY
 };
 EngineSystemManager* engine_system_manager_new (void);
 EngineSystemManager* engine_system_manager_construct (GType object_type);
-void engine_system_manager_addSystem (EngineSystemManager* self, EngineEntitySystem* system);
-EngineEntitySystem* engine_system_manager_getSystem (EngineSystemManager* self, GType t);
-void engine_system_manager_removeSystem (EngineSystemManager* self, EngineEntitySystem* system);
+void engine_system_manager_addSystem (EngineSystemManager* self, EngineSystem* system);
+EngineSystem* engine_system_manager_getSystem (EngineSystemManager* self, GType t);
+void engine_system_manager_removeSystem (EngineSystemManager* self, EngineSystem* system);
 GeeList* engine_system_manager_getSystems (EngineSystemManager* self);
 static void engine_system_manager_finalize (EngineSystemManager* obj);
 
@@ -87,19 +87,19 @@ EngineSystemManager* engine_system_manager_new (void) {
 }
 
 
-void engine_system_manager_addSystem (EngineSystemManager* self, EngineEntitySystem* system) {
+void engine_system_manager_addSystem (EngineSystemManager* self, EngineSystem* system) {
 	GType t = 0UL;
-	EngineEntitySystem* _tmp0_ = NULL;
+	EngineSystem* _tmp0_ = NULL;
 	GType _tmp1_ = 0UL;
-	EngineEntitySystem* oldSystem = NULL;
+	EngineSystem* oldSystem = NULL;
 	GType _tmp2_ = 0UL;
-	EngineEntitySystem* _tmp3_ = NULL;
-	EngineEntitySystem* _tmp4_ = NULL;
+	EngineSystem* _tmp3_ = NULL;
+	EngineSystem* _tmp4_ = NULL;
 	GeeList* _tmp6_ = NULL;
-	EngineEntitySystem* _tmp7_ = NULL;
+	EngineSystem* _tmp7_ = NULL;
 	GeeMap* _tmp8_ = NULL;
 	GType _tmp9_ = 0UL;
-	EngineEntitySystem* _tmp10_ = NULL;
+	EngineSystem* _tmp10_ = NULL;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (system != NULL);
 	_tmp0_ = system;
@@ -110,7 +110,7 @@ void engine_system_manager_addSystem (EngineSystemManager* self, EngineEntitySys
 	oldSystem = _tmp3_;
 	_tmp4_ = oldSystem;
 	if (_tmp4_ != NULL) {
-		EngineEntitySystem* _tmp5_ = NULL;
+		EngineSystem* _tmp5_ = NULL;
 		_tmp5_ = oldSystem;
 		engine_system_manager_removeSystem (self, _tmp5_);
 	}
@@ -125,11 +125,11 @@ void engine_system_manager_addSystem (EngineSystemManager* self, EngineEntitySys
 }
 
 
-void engine_system_manager_removeSystem (EngineSystemManager* self, EngineEntitySystem* system) {
+void engine_system_manager_removeSystem (EngineSystemManager* self, EngineSystem* system) {
 	GeeList* _tmp0_ = NULL;
-	EngineEntitySystem* _tmp1_ = NULL;
+	EngineSystem* _tmp1_ = NULL;
 	GeeMap* _tmp2_ = NULL;
-	EngineEntitySystem* _tmp3_ = NULL;
+	EngineSystem* _tmp3_ = NULL;
 	GType _tmp4_ = 0UL;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (system != NULL);
@@ -143,8 +143,8 @@ void engine_system_manager_removeSystem (EngineSystemManager* self, EngineEntity
 }
 
 
-EngineEntitySystem* engine_system_manager_getSystem (EngineSystemManager* self, GType t) {
-	EngineEntitySystem* result = NULL;
+EngineSystem* engine_system_manager_getSystem (EngineSystemManager* self, GType t) {
+	EngineSystem* result = NULL;
 	GeeMap* _tmp0_ = NULL;
 	GType _tmp1_ = 0UL;
 	gpointer _tmp2_ = NULL;
@@ -152,7 +152,7 @@ EngineEntitySystem* engine_system_manager_getSystem (EngineSystemManager* self, 
 	_tmp0_ = self->priv->systemsByType;
 	_tmp1_ = t;
 	_tmp2_ = gee_map_get (_tmp0_, (gpointer) ((gintptr) _tmp1_));
-	result = (EngineEntitySystem*) _tmp2_;
+	result = (EngineSystem*) _tmp2_;
 	return result;
 }
 
@@ -295,9 +295,9 @@ static void engine_system_manager_instance_init (EngineSystemManager * self) {
 	GeeArrayList* _tmp0_ = NULL;
 	GeeHashMap* _tmp1_ = NULL;
 	self->priv = ENGINE_SYSTEM_MANAGER_GET_PRIVATE (self);
-	_tmp0_ = gee_array_list_new (ENGINE_TYPE_ENTITY_SYSTEM, (GBoxedCopyFunc) g_object_ref, g_object_unref, NULL, NULL, NULL);
+	_tmp0_ = gee_array_list_new (ENGINE_TYPE_SYSTEM, (GBoxedCopyFunc) g_object_ref, g_object_unref, NULL, NULL, NULL);
 	self->priv->systems = (GeeList*) _tmp0_;
-	_tmp1_ = gee_hash_map_new (G_TYPE_GTYPE, NULL, NULL, ENGINE_TYPE_ENTITY_SYSTEM, (GBoxedCopyFunc) g_object_ref, g_object_unref, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+	_tmp1_ = gee_hash_map_new (G_TYPE_GTYPE, NULL, NULL, ENGINE_TYPE_SYSTEM, (GBoxedCopyFunc) g_object_ref, g_object_unref, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 	self->priv->systemsByType = (GeeMap*) _tmp1_;
 	self->ref_count = 1;
 }

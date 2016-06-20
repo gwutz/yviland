@@ -20,7 +20,8 @@ public class TextureManager : GLib.Object {
     }
 
     public Texture load(string identifier, string filename, SDL.Video.Renderer renderer) {
-        stdout.printf("LOAD TEXTURE: %s WITH IDENTIFIER: %s\n", filename, identifier);
+        debug("LOAD TEXTURE: %s WITH IDENTIFIER: %s", filename, identifier);
+        //stdout.printf("LOAD TEXTURE: %s WITH IDENTIFIER: %s\n", filename, identifier);
         SDL.Video.Texture texture = SDLImage.load_texture (renderer, filename);
         Texture t = new Texture (ref texture);
         map.set (identifier, t);
@@ -46,10 +47,10 @@ public class TextureManager : GLib.Object {
             w = dst.w,
             h = dst.h
         };
-        /*dst.x *= 4;
+        dst.x *= 4;
            dst.y *= 4;
            dst.w *= 4;
-           dst.h *= 4;*/
+           dst.h *= 4;
         renderer.copyex (map.get (identifier).get_texture (), src, dst, 0, null, flip);
     }
 

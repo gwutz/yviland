@@ -1,0 +1,13 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	Development	//
+RenderSystem	/home/gunibert/Projects/yviland2/src/systems/rendersystem.vala	3;"	class	line:3
+renderer	/home/gunibert/Projects/yviland2/src/systems/rendersystem.vala	5;"	field	line:5	class:RenderSystem
+textureManager	/home/gunibert/Projects/yviland2/src/systems/rendersystem.vala	6;"	field	line:6	class:RenderSystem
+entities	/home/gunibert/Projects/yviland2/src/systems/rendersystem.vala	7;"	field	line:7	class:RenderSystem
+camera	/home/gunibert/Projects/yviland2/src/systems/rendersystem.vala	8;"	field	line:8	class:RenderSystem
+update	/home/gunibert/Projects/yviland2/src/systems/rendersystem.vala	16;"	method	line:16	class:RenderSystem	signature:(float deltaTime)
+render	/home/gunibert/Projects/yviland2/src/systems/rendersystem.vala	27;"	method	line:27	class:RenderSystem	signature:(Engine.Entity e)
