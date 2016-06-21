@@ -5,7 +5,7 @@ AC_PREREQ([2.69])
 AC_INIT([yviland], [0.1], [info@gunibert.de])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE([subdir-objects])
+AM_INIT_AUTOMAKE([subdir-objects foreign])
 LT_INIT
 AC_CONFIG_MACRO_DIRS([m4])
 
