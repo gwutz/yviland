@@ -1,6 +1,3 @@
-
--include $(top_srcdir)/git.mk
-
 NULL =
 
 confdir = $(pkgdatadir)/

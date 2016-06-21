@@ -1,5 +1,3 @@
--include $(top_srcdir)/git.mk
-
 bin_PROGRAMS = yviland
 yviland_SOURCES = main.vala \
 		    game.vala \

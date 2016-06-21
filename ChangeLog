@@ -1,0 +1,3 @@
+2016-06-21	Günther Wutz <info@gunibert.de>
+	
+	* Added ranlib check for autoconf (used bei ltmain.sh)
